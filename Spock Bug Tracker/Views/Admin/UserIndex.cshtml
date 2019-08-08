@@ -26,7 +26,7 @@
         <h2 class="panel-title">Users</h2>
     </header>
     <div class="panel-body">
-        <table class="table">
+        <table class="table tbltable">
             <thead>
                 <tr>
                     <th>@Html.DisplayName("Avatar")</th>
@@ -40,15 +40,24 @@
                     <th>@Html.DisplayNameFor(model => model.DisplayName)</th>
 
                     <th>@Html.DisplayName("Role")</th>
-
+                    <th></th>
                 </tr>
             </thead>
-            @foreach (var user in Model)
-            {
             <tbody>
+                @foreach (var user in Model)
+                {
+
                 <tr>
                     <td class="avatar">
-                        <img src="@user.AvatarUrl" class="img-responsive" />
+                        @if (!string.IsNullOrEmpty(user.AvatarUrl))
+                        {
+
+                            <img src="@Url.Content(user.AvatarUrl)" class="img-responsive" />
+                        }
+                        else
+                        {
+                            <img src="@Url.Content("~/images/avaatar.jpg")" class="img-responsive" />
+                        }
                     </td>
                     <td>
                         @user.Email
@@ -71,9 +80,10 @@
                         @Html.ActionLink("Manage Projects", "ManageUserProjects", "Admin", new { userId = user.Id }, null)
                     </td>
                 </tr>
-                
+
+
+                }
             </tbody>
-             }
         </table>
     </div>
             

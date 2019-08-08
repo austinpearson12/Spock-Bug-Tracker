@@ -75,5 +75,19 @@ namespace Spock_Bug_Tracker.Helper
         {
             return db.Users.Where(u => u.Projects.All(p => p.Id != projectId)).ToList();
         }
+        public ICollection<ApplicationUser> UsersOnProjectByRole(int projectId, string roleName)
+        {
+            var roleHelper = new UserRolesHelper();
+            var projectUsers = new List<ApplicationUser>();
+            var users = UsersOnProject(projectId);
+            foreach (var user in users)
+            {
+                if (roleHelper.ListUserRoles(user.Id).FirstOrDefault() == roleName)
+                {
+                    projectUsers.Add(user);
+                }
+            }
+            return projectUsers;
+        }
     }    
 }

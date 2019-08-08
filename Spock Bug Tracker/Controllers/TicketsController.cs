@@ -16,6 +16,7 @@ namespace Spock_Bug_Tracker.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
         private UserRolesHelper roleHelper = new UserRolesHelper();
+        private TicketHelper ticketHelper = new TicketHelper();
 
 
 
@@ -70,6 +71,7 @@ namespace Spock_Bug_Tracker.Controllers
         }
 
         // GET: Tickets/Create
+        [Authorize(Roles = "Submitter")]
         public ActionResult Create()
         {
             ViewBag.AssignedToUserId = new SelectList(db.Users, "Id", "FirstName");
@@ -86,10 +88,13 @@ namespace Spock_Bug_Tracker.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Title,Description,Created,Updated,TicketTypeId,ProjectId,TicketPriorityId,TicketStatusId,OwnerUserId,AssignedToUserId")] Ticket ticket)
+        public ActionResult Create([Bind(Include = "Title,Description,TicketTypeId,ProjectId,TicketPriorityId")] Ticket ticket)
         {
             if (ModelState.IsValid)
             {
+                ticket.Created = DateTimeOffset.Now;
+                ticket.TicketStatusId = db.TicketStatuses.FirstOrDefault(t => t.Name == "New / Unassigned").Id;
+                ticket.OwnerUserId = User.Identity.GetUserId();
                 db.Tickets.Add(ticket);
                 db.SaveChanges();
                 return RedirectToAction("Index");

@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 namespace Spock_Bug_Tracker.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();

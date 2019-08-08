@@ -63,9 +63,9 @@ namespace Spock_Bug_Tracker.Migrations
                 {
                     UserName = "ap@mailinator.com",
                     Email = "ap@mailinator.com",
-                    FirstName = "Austin",
-                    LastName = "Pearson",
-                    DisplayName = "austinpearson12"
+                    FirstName = "Pm",
+                    LastName = "Phara",
+                    DisplayName = "pmPhara12"
                 }, "Abc&123");
             }
             if (!context.Users.Any(u => u.Email == "ap1@mailinator.com"))
@@ -74,9 +74,9 @@ namespace Spock_Bug_Tracker.Migrations
                 {
                     UserName = "ap1@mailinator.com",
                     Email = "ap1@mailinator.com",
-                    FirstName = "Austin",
-                    LastName = "Pearson",
-                    DisplayName = "austinpearson12"
+                    FirstName = "Dev",
+                    LastName = "Donald",
+                    DisplayName = "DevDonald2019"
                 }, "Abc&123");
             }
             if (!context.Users.Any(u => u.Email == "ap2@mailinator.com"))
@@ -85,9 +85,9 @@ namespace Spock_Bug_Tracker.Migrations
                 {
                     UserName = "ap2@mailinator.com",
                     Email = "ap2@mailinator.com",
-                    FirstName = "Austin",
-                    LastName = "Pearson",
-                    DisplayName = "austinpearson12"
+                    FirstName = "Sub",
+                    LastName = "Sarah",
+                    DisplayName = "SubSarah98"
                 }, "Abc&123");
             }
 
@@ -120,19 +120,22 @@ namespace Spock_Bug_Tracker.Migrations
                 new TicketStatus { Name = "Assigned", Description = "" },
                 new TicketStatus { Name = "In Progress", Description = "" },
                 new TicketStatus { Name = "Completed", Description = "" },
-                new TicketStatus { Name = "Archived", Description = "" },
-               
-                new TicketStatus { Name = "Completed", Description = "" },
                 new TicketStatus { Name = "Archived", Description = "" }
                 );
             context.TicketTypes.AddOrUpdate(
                 t => t.Name,
-                new TicketType { Name = "Bug / Defect", Description = "" },
-                new TicketType { Name = "New Functionality Request", Description = "" },
-                new TicketType { Name = "New Document Request", Description = "" },
-                new TicketType { Name = "Training Request", Description = "" },
-                new TicketType { Name = "Complaint", Description = "" }              
+                new TicketType { Name = "Bug", Description = "An error has occurred that resulted in either the application crashing or the user seeing error infromation" },
+                new TicketType { Name = "Defect", Description = "An error has occured that resulted in either a miscalculation or an incorrect workflow" },
+                new TicketType { Name = "New Feature Request", Description = "A client has called in asking for new functionality in an existing application" },
+                new TicketType { Name = "New Document Request", Description = "A client has called in asling for new documentation to be created for the existing application" },
+                new TicketType { Name = "Training Request", Description = "A client has called in asking to schedule a training session" },
+                new TicketType { Name = "Complaint", Description = "A client has called in to make a general complaint about our application" }              
                 );
+
+
+
+
+
         }
     }
 }
