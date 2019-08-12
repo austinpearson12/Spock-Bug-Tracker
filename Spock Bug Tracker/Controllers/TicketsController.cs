@@ -17,6 +17,7 @@ namespace Spock_Bug_Tracker.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
         private UserRolesHelper roleHelper = new UserRolesHelper();
         private TicketHelper ticketHelper = new TicketHelper();
+        private ProjectsHelper projectsHelper = new ProjectsHelper();
 
 
 
@@ -29,33 +30,9 @@ namespace Spock_Bug_Tracker.Controllers
         }
 
 
-        [Authorize(Roles="ProjectManager, Developer, Submitter")]
-        public ActionResult MyIndex()
-        {
-            var userId = User.Identity.GetUserId();
-
-            var myRole = roleHelper.ListUserRoles(userId).FirstOrDefault();
-
-            var myTickets = new List<Ticket>();
-            switch(myRole)
-            {
-                
-                case "Developer":
-                    myTickets = db.Tickets.Where(t => t.AssignedToUserId == userId).ToList();
-                    break;
-                case "Submitter":
-                    myTickets = db.Tickets.Where(t => t.AssignedToUserId == userId).ToList();
-                    break;
-                case "ProjectManager":
-                    //myTickets are going to be all the Tickets on all the Projects I am on.
-                    myTickets = db.Users.Find(userId).Projects.SelectMany(t => t.Tickets).ToList();
-                    break;
-            }
-
-            return View("Index", myTickets);           
-        }
 
         // GET: Tickets/Details/5
+        [Authorize]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -67,18 +44,45 @@ namespace Spock_Bug_Tracker.Controllers
             {
                 return HttpNotFound();
             }
-            return View(ticket);
+            var userId = User.Identity.GetUserId();
+            var userRole = roleHelper.ListUserRoles(userId).FirstOrDefault();
+            var authorized = false;
+            switch (userRole)
+            {
+                case "Submitter":
+                    authorized = ticket.OwnerUserId == userId;
+                    break;
+                case "Developer":
+                    authorized = ticket.AssignedToUserId == userId;
+                    break;
+                case "Admin":
+                    authorized = true;
+                    break;
+                case "Project Manager":
+                    var projectIds = db.Users.Find(userId).Projects.Select(p => p.Id).ToList();
+                    authorized = projectIds.Contains(ticket.ProjectId);
+                    break;
+            }
+            if (authorized == true)
+            {
+                return View(ticket);
+            }
+            else
+            {
+                return RedirectToAction("Permissions", "Admin");
+            }
         }
 
         // GET: Tickets/Create
         [Authorize(Roles = "Submitter")]
         public ActionResult Create()
         {
-            ViewBag.AssignedToUserId = new SelectList(db.Users, "Id", "FirstName");
-            ViewBag.OwnerUserId = new SelectList(db.Users, "Id", "FirstName");
-            ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name");
-            ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "Name");
-            ViewBag.TicketStatusId = new SelectList(db.TicketStatuses, "Id", "Name");
+            var userId = User.Identity.GetUserId();
+            var myProjects = projectsHelper.ListUserProjects(userId);
+
+
+            ViewBag.ProjectId = new SelectList(myProjects, "Id", "Name");
+            ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "Name");          
             ViewBag.TicketTypeId = new SelectList(db.TicketTypes, "Id", "Name");
             return View();
         }
@@ -92,7 +96,8 @@ namespace Spock_Bug_Tracker.Controllers
         {
             if (ModelState.IsValid)
             {
-                ticket.Created = DateTimeOffset.Now;
+                ticket.Created = DateTime.Now;
+                ticket.OwnerUserId = User.Identity.GetUserId();
                 ticket.TicketStatusId = db.TicketStatuses.FirstOrDefault(t => t.Name == "New / Unassigned").Id;
                 ticket.OwnerUserId = User.Identity.GetUserId();
                 db.Tickets.Add(ticket);
@@ -110,6 +115,7 @@ namespace Spock_Bug_Tracker.Controllers
         }
 
         // GET: Tickets/Edit/5
+        [Authorize]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -121,13 +127,52 @@ namespace Spock_Bug_Tracker.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.AssignedToUserId = new SelectList(db.Users, "Id", "FirstName", ticket.AssignedToUserId);
-            ViewBag.OwnerUserId = new SelectList(db.Users, "Id", "FirstName", ticket.OwnerUserId);
-            ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name", ticket.ProjectId);
+            var userId = User.Identity.GetUserId();
+            var myProjects = projectsHelper.ListUserProjects(userId);
+            var developers = new List<ApplicationUser>();
+            var usersOnProject = projectsHelper.UsersOnProject(ticket.ProjectId);
+            foreach (var user in usersOnProject)
+            {
+                if (roleHelper.IsUserInRole(user.Id, "Developer"))
+                {
+                    developers.Add(user);
+                }
+            }
+
+            ViewBag.AssignedToUserId = new SelectList(developers, "Id", "FullContactInfo", ticket.AssignedToUserId);
+            ViewBag.OwnerUserId = new SelectList(db.Users, "Id", "FullContactInfo", ticket.OwnerUserId);
+            ViewBag.ProjectId = new SelectList(myProjects, "Id", "Name", ticket.ProjectId);
             ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "Name", ticket.TicketPriorityId);
             ViewBag.TicketStatusId = new SelectList(db.TicketStatuses, "Id", "Name", ticket.TicketStatusId);
             ViewBag.TicketTypeId = new SelectList(db.TicketTypes, "Id", "Name", ticket.TicketTypeId);
-            return View(ticket);
+
+            //authorization
+            var userRole = roleHelper.ListUserRoles(userId).FirstOrDefault();
+            var authorized = false;
+            switch (userRole)
+            {
+                case "Submitter":
+                    authorized = ticket.OwnerUserId == userId;
+                    break;
+                case "Developer":
+                    authorized = ticket.AssignedToUserId == userId;
+                    break;
+                case "Admin":
+                    authorized = true;
+                    break;
+                case "Project Manager":
+                    var projectIds = db.Users.Find(userId).Projects.Select(p => p.Id).ToList();
+                    authorized = projectIds.Contains(ticket.ProjectId);
+                    break;
+            }
+            if (authorized == true)
+            {
+                return View(ticket);
+            }
+            else
+            {
+                return RedirectToAction("Permissions", "Admin");
+            }
         }
 
         // POST: Tickets/Edit/5

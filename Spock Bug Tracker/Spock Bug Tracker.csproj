@@ -2197,6 +2197,7 @@
     <Content Include="Views\Admin\ManageProjects.cshtml" />
     <Content Include="Views\Admin\ManageUsers.cshtml" />
     <Content Include="Views\Tickets\MyIndex.cshtml" />
+    <Content Include="Views\Admin\Permissions.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

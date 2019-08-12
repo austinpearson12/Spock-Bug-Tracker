@@ -156,6 +156,10 @@ namespace Spock_Bug_Tracker.Controllers
 
             return RedirectToAction("Details", "Projects", new { id = projectId });
         }
+        public ActionResult Permissions()
+        {
+            return View();
+        }
 
     }
 }

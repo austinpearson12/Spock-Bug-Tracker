@@ -4,95 +4,67 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
-
-<div>
-    <h4>Ticket</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.AssignedToUser.FirstName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.AssignedToUser.FirstName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.OwnerUser.FirstName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.OwnerUser.FirstName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Project.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Project.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.TicketPriority.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.TicketPriority.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.TicketStatus.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.TicketStatus.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.TicketType.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.TicketType.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Created)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Created)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Updated)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Updated)
-        </dd>
-
-    </dl>
+<h1 class="page-header">Ticket Dashboard <small>For Ticket "@Html.DisplayFor(modelItem => Model.Title)"</small></h1>
+<!--Begin Details Panel-->
+<div class="row">
+    <div class="panel panel-inverse WideButton">
+        <div class="panel-heading">
+            <h4 class="panel-title">Ticket Details</h4>
+        </div>
+        <div class="panel-body table-responsive">
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Title)
+                        </th>
+                        <th>
+                            @Html.DisplayName("Project")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Priority")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Status")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Type")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Assigned Developer")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Created By")
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => Model.Title)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => Model.Project.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => Model.TicketPriority.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => Model.TicketStatus.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => Model.TicketType.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => Model.AssignedToUser.FullName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => Model.OwnerUser.FullName)
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+<!--End Details Panel-->
