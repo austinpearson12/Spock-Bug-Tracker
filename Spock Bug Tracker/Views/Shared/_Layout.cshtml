@@ -1,12 +1,12 @@
 ﻿@using Spock_Bug_Tracker.Models
 @using Microsoft.AspNet.Identity
-
+@using Spock_Bug_Tracker.Helper
 
 
 <!doctype html>
 <html class="fixed">
 <head>
-    @{ 
+    @{
         var userId = User.Identity.GetUserId();
         var db = new ApplicationDbContext();
         var user = db.Users.Find(userId);
@@ -31,7 +31,7 @@
     <link rel="stylesheet" href="~/assets/vendor/font-awesome/css/font-awesome.css" />
     <link rel="stylesheet" href="~/assets/vendor/magnific-popup/magnific-popup.css" />
     <link rel="stylesheet" href="~/assets/vendor/bootstrap-datepicker/css/datepicker3.css" />
-    
+
     <!-- Specific Page Vendor CSS -->
     <link rel="stylesheet" href="~/assets/vendor/jquery-ui/css/ui-lightness/jquery-ui-1.10.4.custom.css" />
     <link rel="stylesheet" href="~/assets/vendor/bootstrap-multiselect/bootstrap-multiselect.css" />
@@ -51,6 +51,13 @@
     <link href="~/Content/jquery.dataTables.min.css" rel="stylesheet" />
     <!-- Head Libs -->
     <script src="~/assets/vendor/modernizr/modernizr.js"></script>
+
+    <style>
+        body {
+            background: linear-gradient(to right, #000046, #1cb5eo);
+        }
+    </style>
+
 
 </head>
 <body>
@@ -82,160 +89,60 @@
                 <span class="separator"></span>
 
                 <ul class="notifications">
-                    <li>
-                        <a href="#" class="dropdown-toggle notification-icon" data-toggle="dropdown">
-                            <i class="fa fa-tasks"></i>
-                            <span class="badge">3</span>
-                        </a>
 
-                        <div class="dropdown-menu notification-menu large">
-                            <div class="notification-title">
-                                <span class="pull-right label label-default">3</span>
-                                Tasks
-                            </div>
-
-                            <div class="content">
-                                <ul>
-                                    <li>
-                                        <p class="clearfix mb-xs">
-                                            <span class="message pull-left">Generating Sales Report</span>
-                                            <span class="message pull-right text-dark">60%</span>
-                                        </p>
-                                        <div class="progress progress-xs light">
-                                            <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;"></div>
-                                        </div>
-                                    </li>
-
-                                    <li>
-                                        <p class="clearfix mb-xs">
-                                            <span class="message pull-left">Importing Contacts</span>
-                                            <span class="message pull-right text-dark">98%</span>
-                                        </p>
-                                        <div class="progress progress-xs light">
-                                            <div class="progress-bar" role="progressbar" aria-valuenow="98" aria-valuemin="0" aria-valuemax="100" style="width: 98%;"></div>
-                                        </div>
-                                    </li>
-
-                                    <li>
-                                        <p class="clearfix mb-xs">
-                                            <span class="message pull-left">Uploading something big</span>
-                                            <span class="message pull-right text-dark">33%</span>
-                                        </p>
-                                        <div class="progress progress-xs light mb-xs">
-                                            <div class="progress-bar" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width: 33%;"></div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <a href="#" class="dropdown-toggle notification-icon" data-toggle="dropdown">
-                            <i class="fa fa-envelope"></i>
-                            <span class="badge">4</span>
-                        </a>
-
-                        <div class="dropdown-menu notification-menu">
-                            <div class="notification-title">
-                                <span class="pull-right label label-default">230</span>
-                                Messages
-                            </div>
-
-                            <div class="content">
-                                <ul>
-                                    <li>
-                                        <a href="#" class="clearfix">
-                                            <figure class="image">
-                                                <img src="~/assets/images/!sample-user.jpg" alt="Joseph Doe Junior" class="img-circle" />
-                                            </figure>
-                                            <span class="title">Joseph Doe</span>
-                                            <span class="message">Lorem ipsum dolor sit.</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="clearfix">
-                                            <figure class="image">
-                                                <img src="~/assets/images/!sample-user.jpg" alt="Joseph Junior" class="img-circle" />
-                                            </figure>
-                                            <span class="title">Joseph Junior</span>
-                                            <span class="message truncate">Truncated message. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sit amet lacinia orci. Proin vestibulum eget risus non luctus. Nunc cursus lacinia lacinia. Nulla molestie malesuada est ac tincidunt. Quisque eget convallis diam, nec venenatis risus. Vestibulum blandit faucibus est et malesuada. Sed interdum cursus dui nec venenatis. Pellentesque non nisi lobortis, rutrum eros ut, convallis nisi. Sed tellus turpis, dignissim sit amet tristique quis, pretium id est. Sed aliquam diam diam, sit amet faucibus tellus ultricies eu. Aliquam lacinia nibh a metus bibendum, eu commodo eros commodo. Sed commodo molestie elit, a molestie lacus porttitor id. Donec facilisis varius sapien, ac fringilla velit porttitor et. Nam tincidunt gravida dui, sed pharetra odio pharetra nec. Duis consectetur venenatis pharetra. Vestibulum egestas nisi quis elementum elementum.</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="clearfix">
-                                            <figure class="image">
-                                                <img src="~/assets/images/!sample-user.jpg" alt="Joe Junior" class="img-circle" />
-                                            </figure>
-                                            <span class="title">Joe Junior</span>
-                                            <span class="message">Lorem ipsum dolor sit.</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="clearfix">
-                                            <figure class="image">
-                                                <img src="~/assets/images/!sample-user.jpg" alt="Joseph Junior" class="img-circle" />
-                                            </figure>
-                                            <span class="title">Joseph Junior</span>
-                                            <span class="message">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sit amet lacinia orci. Proin vestibulum eget risus non luctus. Nunc cursus lacinia lacinia. Nulla molestie malesuada est ac tincidunt. Quisque eget convallis diam.</span>
-                                        </a>
-                                    </li>
-                                </ul>
-
-                                <hr />
-
-                                <div class="text-right">
-                                    <a href="#" class="view-more">View All</a>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
                     <li>
                         <a href="#" class="dropdown-toggle notification-icon" data-toggle="dropdown">
                             <i class="fa fa-bell"></i>
-                            <span class="badge">3</span>
+                            <span class="badge">@NotificationHelper.GetNewUserNotificationCount()</span>
                         </a>
 
                         <div class="dropdown-menu notification-menu">
                             <div class="notification-title">
-                                <span class="pull-right label label-default">3</span>
-                                Alerts
+                                <span class="pull-right label label-default">@NotificationHelper.GetAllUserNotificationCount()</span>
+                                Notifications
                             </div>
 
                             <div class="content">
                                 <ul>
+                                    @foreach (var notification in NotificationHelper.GetUnreadUserNotifications())
+                                    {
                                     <li>
-                                        <a href="#" class="clearfix">
-                                            <div class="image">
-                                                <i class="fa fa-thumbs-down bg-danger"></i>
+                                        @using (Html.BeginForm("MarkAsRead", "TicketNotifications"))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            @Html.Hidden("Id", notification.Id)
+
+                                            <div class="row">
+                                                <div class="col-md-2">
+                                                    <figure class="image">
+                                                        <img src="@notification.Sender.AvatarUrl" alt="@notification.Sender.Email" class="img-circle" width="25"/>
+                                                    </figure>
+                                                </div>
+                                                <div class="col-md-10">
+                                                    <span class="title">@notification.Subject</span>
+                                                </div>
                                             </div>
-                                            <span class="title">Server is Down!</span>
-                                            <span class="message">Just now</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="clearfix">
-                                            <div class="image">
-                                                <i class="fa fa-lock bg-warning"></i>
+                                            <br />
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <span class="message text-justify"><b>@notification.NotificationBody</b></span>
+                                                </div>
                                             </div>
-                                            <span class="title">User Locked</span>
-                                            <span class="message">15 minutes ago</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="clearfix">
-                                            <div class="image">
-                                                <i class="fa fa-signal bg-success"></i>
+                                            <br />
+                                            <div class="row">
+                                                <div class="col-md-12 text-center">
+                                                    <button type="submit" class="btn btn-sm btn-primary">Mark as read</button>
+                                                </div>
                                             </div>
-                                            <span class="title">Connection Restaured</span>
-                                            <span class="message">10/10/2014</span>
-                                        </a>
-                                    </li>
-                                </ul>
+                                        }
+                                        </li>
+                                    }
+                                    </ul>
 
                                 <hr />
 
                                 <div class="text-right">
-                                    <a href="#" class="view-more">View All</a>
+                                    <a href="@Url.Action("MyNotifications", "TicketNotifications")" class="view-more">View All</a>
                                 </div>
                             </div>
                         </div>
@@ -243,36 +150,50 @@
                 </ul>
 
                 <span class="separator"></span>
+                @if (User.Identity.IsAuthenticated)
+                {
 
-                <div id="userbox" class="userbox">
-                    <a href="#" data-toggle="dropdown">
-                        <figure class="profile-picture">
-                            <img src="~/assets/images/!logged-user.jpg" alt="Joseph Doe" class="img-circle" data-lock-picture="~/assets/images/!logged-user.jpg" />
-                        </figure>
-                        <div class="profile-info" data-lock-name="John Doe" data-lock-email="johndoe@JSOFT.com">
-                            <span class="name">John Doe Junior</span>
-                            <span class="role">administrator</span>
+                    var AvatarUrl = db.Users.Find(userId).AvatarUrl;
+                    var fullName = db.Users.Find(userId).FullName;
+                    var roleHelper = new UserRolesHelper();
+
+                    <div id="userbox" class="userbox">
+                        <a href="#" data-toggle="dropdown">
+                            <figure class="profile-picture">
+                                <img src="@AvatarUrl" alt="" class="img-circle" />
+                            </figure>
+                            <div class="profile-info">
+                                <span class="name">@fullName</span>
+                                <span class="role">
+                                    @if (roleHelper.ListUserRoles(userId).FirstOrDefault() == "Project Manager")
+                                    {
+                                        <span>Project Manager</span>
+                                    }
+                                    else
+                                    {
+                                        @roleHelper.ListUserRoles(userId).FirstOrDefault();
+                                    }
+                                </span>
+                            </div>
+
+                            <i class="fa custom-caret"></i>
+                        </a>
+
+                        <div class="dropdown-menu">
+                            <ul class="list-unstyled">
+                                <li class="divider"></li>
+                                <li>
+                                    <a role="menuitem" tabindex="-1" href="pages-user-profile.html"><i class="fa fa-user"></i> My Profile</a>
+                                </li>                                
+                                <li>
+                                    <a role="menuitem" tabindex="-1" href="@Url.Action("Login", "Home")"><i class="fa fa-power-off"></i> Logout</a>
+                                </li>
+                            </ul>
                         </div>
-
-                        <i class="fa custom-caret"></i>
-                    </a>
-
-                    <div class="dropdown-menu">
-                        <ul class="list-unstyled">
-                            <li class="divider"></li>
-                            <li>
-                                <a role="menuitem" tabindex="-1" href="pages-user-profile.html"><i class="fa fa-user"></i> My Profile</a>
-                            </li>
-                            <li>
-                                <a role="menuitem" tabindex="-1" href="#" data-lock-screen="true"><i class="fa fa-lock"></i> Lock Screen</a>
-                            </li>
-                            <li>
-                                <a role="menuitem" tabindex="-1" href="@Url.Action("Login", "Home")"><i class="fa fa-power-off"></i> Logout</a>
-                            </li>
-                        </ul>
                     </div>
-                </div>
+                }
             </div>
+
             <!-- end: search & user box -->
         </header>
         <!-- end: header -->
@@ -328,7 +249,7 @@
                                 @if ((User.IsInRole("Submitter")) || (User.IsInRole("Developer")) || (User.IsInRole("Project Manager")))
                                 {
                                     <li class="nav-active">
-                                        <a href="@Url.Action("Index", "Projects")">
+                                        <a href="@Url.Action("MyIndex", "Projects")">
                                             <i class="fa fa-home" aria-hidden="true"></i>
                                             <span>My Projects</span>
                                         </a>
@@ -437,62 +358,62 @@
                 </div>
             </div>
         </aside>
-        
+
     </section>
-    
-        <!-- Vendor -->
-        <script src="~/assets/vendor/jquery/jquery.js"></script>
-        <script src="~/assets/vendor/jquery-browser-mobile/jquery.browser.mobile.js"></script>
-        <script src="~/assets/vendor/bootstrap/js/bootstrap.js"></script>
-        <script src="~/assets/vendor/nanoscroller/nanoscroller.js"></script>
-        <script src="~/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
-        <script src="~/assets/vendor/magnific-popup/magnific-popup.js"></script>
-        <script src="~/assets/vendor/jquery-placeholder/jquery.placeholder.js"></script>
 
-        <!-- Specific Page Vendor -->
-        <script src="~/assets/vendor/jquery-ui/js/jquery-ui-1.10.4.custom.js"></script>
-        <script src="~/assets/vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.js"></script>
-        <script src="~/assets/vendor/jquery-appear/jquery.appear.js"></script>
-        <script src="~/assets/vendor/bootstrap-multiselect/bootstrap-multiselect.js"></script>
-        <script src="~/assets/vendor/jquery-easypiechart/jquery.easypiechart.js"></script>
-        <script src="~/assets/vendor/flot/jquery.flot.js"></script>
-        <script src="~/assets/vendor/flot-tooltip/jquery.flot.tooltip.js"></script>
-        <script src="~/assets/vendor/flot/jquery.flot.pie.js"></script>
-        <script src="~/assets/vendor/flot/jquery.flot.categories.js"></script>
-        <script src="~/assets/vendor/flot/jquery.flot.resize.js"></script>
-        <script src="~/assets/vendor/jquery-sparkline/jquery.sparkline.js"></script>
-        <script src="~/assets/vendor/raphael/raphael.js"></script>
-        <script src="~/assets/vendor/morris/morris.js"></script>
-        <script src="~/assets/vendor/gauge/gauge.js"></script>
-        <script src="~/assets/vendor/snap-svg/snap.svg.js"></script>
-        <script src="~/assets/vendor/liquid-meter/liquid.meter.js"></script>
-        <script src="~/assets/vendor/jqvmap/jquery.vmap.js"></script>
-        <script src="~/assets/vendor/jqvmap/data/jquery.vmap.sampledata.js"></script>
-        <script src="~/assets/vendor/jqvmap/maps/jquery.vmap.world.js"></script>
-        <script src="~/assets/vendor/jqvmap/maps/continents/jquery.vmap.africa.js"></script>
-        <script src="~/assets/vendor/jqvmap/maps/continents/jquery.vmap.asia.js"></script>
-        <script src="~/assets/vendor/jqvmap/maps/continents/jquery.vmap.australia.js"></script>
-        <script src="~/assets/vendor/jqvmap/maps/continents/jquery.vmap.europe.js"></script>
-        <script src="~/assets/vendor/jqvmap/maps/continents/jquery.vmap.north-america.js"></script>
-        <script src="~/assets/vendor/jqvmap/maps/continents/jquery.vmap.south-america.js"></script>
-        
-        <!-- Theme Base, Components and Settings -->
-        <script src="~/assets/javascripts/theme.js"></script>
+    <!-- Vendor -->
+    <script src="~/assets/vendor/jquery/jquery.js"></script>
+    <script src="~/assets/vendor/jquery-browser-mobile/jquery.browser.mobile.js"></script>
+    <script src="~/assets/vendor/bootstrap/js/bootstrap.js"></script>
+    <script src="~/assets/vendor/nanoscroller/nanoscroller.js"></script>
+    <script src="~/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <script src="~/assets/vendor/magnific-popup/magnific-popup.js"></script>
+    <script src="~/assets/vendor/jquery-placeholder/jquery.placeholder.js"></script>
 
-        <!-- Theme Custom -->
-        <script src="~/assets/javascripts/theme.custom.js"></script>
+    <!-- Specific Page Vendor -->
+    <script src="~/assets/vendor/jquery-ui/js/jquery-ui-1.10.4.custom.js"></script>
+    <script src="~/assets/vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.js"></script>
+    <script src="~/assets/vendor/jquery-appear/jquery.appear.js"></script>
+    <script src="~/assets/vendor/bootstrap-multiselect/bootstrap-multiselect.js"></script>
+    <script src="~/assets/vendor/jquery-easypiechart/jquery.easypiechart.js"></script>
+    <script src="~/assets/vendor/flot/jquery.flot.js"></script>
+    <script src="~/assets/vendor/flot-tooltip/jquery.flot.tooltip.js"></script>
+    <script src="~/assets/vendor/flot/jquery.flot.pie.js"></script>
+    <script src="~/assets/vendor/flot/jquery.flot.categories.js"></script>
+    <script src="~/assets/vendor/flot/jquery.flot.resize.js"></script>
+    <script src="~/assets/vendor/jquery-sparkline/jquery.sparkline.js"></script>
+    <script src="~/assets/vendor/raphael/raphael.js"></script>
+    <script src="~/assets/vendor/morris/morris.js"></script>
+    <script src="~/assets/vendor/gauge/gauge.js"></script>
+    <script src="~/assets/vendor/snap-svg/snap.svg.js"></script>
+    <script src="~/assets/vendor/liquid-meter/liquid.meter.js"></script>
+    <script src="~/assets/vendor/jqvmap/jquery.vmap.js"></script>
+    <script src="~/assets/vendor/jqvmap/data/jquery.vmap.sampledata.js"></script>
+    <script src="~/assets/vendor/jqvmap/maps/jquery.vmap.world.js"></script>
+    <script src="~/assets/vendor/jqvmap/maps/continents/jquery.vmap.africa.js"></script>
+    <script src="~/assets/vendor/jqvmap/maps/continents/jquery.vmap.asia.js"></script>
+    <script src="~/assets/vendor/jqvmap/maps/continents/jquery.vmap.australia.js"></script>
+    <script src="~/assets/vendor/jqvmap/maps/continents/jquery.vmap.europe.js"></script>
+    <script src="~/assets/vendor/jqvmap/maps/continents/jquery.vmap.north-america.js"></script>
+    <script src="~/assets/vendor/jqvmap/maps/continents/jquery.vmap.south-america.js"></script>
 
-        <!-- Theme Initialization Files -->
-        <script src="~/assets/javascripts/theme.init.js"></script>
+    <!-- Theme Base, Components and Settings -->
+    <script src="~/assets/javascripts/theme.js"></script>
+
+    <!-- Theme Custom -->
+    <script src="~/assets/javascripts/theme.custom.js"></script>
+
+    <!-- Theme Initialization Files -->
+    <script src="~/assets/javascripts/theme.init.js"></script>
 
 
-        <!-- Examples -->
-        <script src="~/assets/javascripts/dashboard/examples.dashboard.js"></script>
-        <script src="~/Scripts/jquery.dataTables.min.js"></script>
+    <!-- Examples -->
+    <script src="~/assets/javascripts/dashboard/examples.dashboard.js"></script>
+    <script src="~/Scripts/jquery.dataTables.min.js"></script>
     <script>
-        $(".table").DataTable(); 
+        $(".table").DataTable();
     </script>
 
-    @RenderSection("scripts", required:false)
+    @RenderSection("scripts", required: false)
 </body>
 </html>

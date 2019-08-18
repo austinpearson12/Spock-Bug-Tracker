@@ -14,6 +14,21 @@ namespace Spock_Bug_Tracker.Helper
         ApplicationDbContext db = new ApplicationDbContext();
         UserRolesHelper roleHelper = new UserRolesHelper();
 
+
+        public List<string> UserIsInRoleOnProject(int projectId, string roleName)
+        {
+
+            var people = new List<string>();
+
+            foreach(var user in UsersOnProject(projectId).ToList())
+            {
+                if(roleHelper.IsUserInRole(user.Id, roleName))
+                {
+                    people.Add(user.Id);
+                }
+            }
+            return people;
+        }
         public bool IsUserOnProject(string userId, int projectId)
         {
             var project = db.Projects.Find(projectId);
@@ -23,9 +38,10 @@ namespace Spock_Bug_Tracker.Helper
 
         public ICollection<Project> ListUserProjects(string userId)
         {
-            var projects = new List<Project>();
-            
+            var user = db.Users.Find(userId);
+            var projects = user.Projects.ToList();
 
+          
             return (projects);
         }
 

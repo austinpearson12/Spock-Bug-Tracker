@@ -171,6 +171,7 @@
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\ProjectNotificationController.cs" />
     <Compile Include="Controllers\ProjectsController.cs" />
     <Compile Include="Controllers\TicketAttachmentsController.cs" />
     <Compile Include="Controllers\TicketCommentsController.cs" />
@@ -184,6 +185,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helper\ImageUploader.cs" />
+    <Compile Include="Helper\NotificationHelper.cs" />
+    <Compile Include="Helper\ProjectNotificationHelper.cs" />
     <Compile Include="Helper\ProjectsHelper.cs" />
     <Compile Include="Helper\TicketHelper.cs" />
     <Compile Include="Helper\UserProjectsHelper.cs" />
@@ -195,6 +198,7 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Project.cs" />
+    <Compile Include="Models\ProjectNotification.cs" />
     <Compile Include="Models\Ticket.cs" />
     <Compile Include="Models\TicketAttachment.cs" />
     <Compile Include="Models\TicketComment.cs" />
@@ -1778,6 +1782,7 @@
     <Content Include="images\blog-image-2.jpg" />
     <Content Include="images\blog-image-3.jpg" />
     <Content Include="images\device.png" />
+    <Content Include="images\docx.png" />
     <Content Include="images\favicon.ico" />
     <Content Include="images\icon.png" />
     <Content Include="images\invoice-logo.png" />
@@ -1808,6 +1813,10 @@
     <Content Include="images\post-thumb-1.jpg" />
     <Content Include="images\post-thumb-2.jpg" />
     <Content Include="images\post-thumb-3.jpg" />
+    <Content Include="images\doc.png" />
+    <Content Include="images\dotx.png" />
+    <Content Include="images\other.png" />
+    <Content Include="images\pdf.png" />
     <Content Include="images\projects\project-1.jpg" />
     <Content Include="images\projects\project-2.jpg" />
     <Content Include="images\projects\project-3.jpg" />
@@ -1816,6 +1825,9 @@
     <Content Include="images\projects\project-6.jpg" />
     <Content Include="images\projects\project-7.jpg" />
     <Content Include="images\projects\project.jpg" />
+    <Content Include="images\xls.png" />
+    <Content Include="images\xlsx.png" />
+    <Content Include="images\zip.png" />
     <Content Include="images\widget-twitter-profile.jpg" />
     <Content Include="Scripts\bootstrap-datepicker.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -2080,6 +2092,7 @@
     <Content Include="assets\vendor\style-switcher\less\skin.less" />
     <Content Include="assets\vendor\style-switcher\less\variables.less" />
     <Content Include="Private.config" />
+    <None Include="Properties\PublishProfiles\ACPBugTracker - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
@@ -2198,10 +2211,13 @@
     <Content Include="Views\Admin\ManageUsers.cshtml" />
     <Content Include="Views\Tickets\MyIndex.cshtml" />
     <Content Include="Views\Admin\Permissions.cshtml" />
+    <Content Include="Views\Projects\MyIndex.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Attachments\" />
     <Folder Include="Uploads\" />
+    <Folder Include="Views\ProjectNotification\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

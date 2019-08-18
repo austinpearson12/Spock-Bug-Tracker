@@ -139,8 +139,8 @@ namespace Spock_Bug_Tracker.Controllers
                 }
             }
 
-            ViewBag.AssignedToUserId = new SelectList(developers, "Id", "FullContactInfo", ticket.AssignedToUserId);
-            ViewBag.OwnerUserId = new SelectList(db.Users, "Id", "FullContactInfo", ticket.OwnerUserId);
+            ViewBag.AssignedToUserId = new SelectList(developers, "Id", "FullName", ticket.AssignedToUserId);
+            ViewBag.OwnerUserId = new SelectList(db.Users, "Id", "FullName", ticket.OwnerUserId);
             ViewBag.ProjectId = new SelectList(myProjects, "Id", "Name", ticket.ProjectId);
             ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "Name", ticket.TicketPriorityId);
             ViewBag.TicketStatusId = new SelectList(db.TicketStatuses, "Id", "Name", ticket.TicketStatusId);
@@ -184,12 +184,17 @@ namespace Spock_Bug_Tracker.Controllers
         {
             if (ModelState.IsValid)
             {
+                var oldTicket = db.Tickets.AsNoTracking().FirstOrDefault(t => t.Id == ticket.Id);
+
                 db.Entry(ticket).State = EntityState.Modified;
                 db.SaveChanges();
+
+                NotificationHelper.CreateAssignmentNotification(oldTicket, ticket);
+
                 return RedirectToAction("Index");
             }
-            ViewBag.AssignedToUserId = new SelectList(db.Users, "Id", "FirstName", ticket.AssignedToUserId);
-            ViewBag.OwnerUserId = new SelectList(db.Users, "Id", "FirstName", ticket.OwnerUserId);
+            ViewBag.AssignedToUserId = new SelectList(db.Users, "Id", "FullName", ticket.AssignedToUserId);
+            ViewBag.OwnerUserId = new SelectList(db.Users, "Id", "FullName", ticket.OwnerUserId);
             ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name", ticket.ProjectId);
             ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "Name", ticket.TicketPriorityId);
             ViewBag.TicketStatusId = new SelectList(db.TicketStatuses, "Id", "Name", ticket.TicketStatusId);

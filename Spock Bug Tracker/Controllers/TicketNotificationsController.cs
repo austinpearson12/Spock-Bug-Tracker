@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using Spock_Bug_Tracker.Models;
 
 namespace Spock_Bug_Tracker.Controllers
@@ -19,6 +20,23 @@ namespace Spock_Bug_Tracker.Controllers
         {
             var ticketNotifications = db.TicketNotifications.Include(t => t.Recipient).Include(t => t.Sender);
             return View(ticketNotifications.ToList());
+        }
+
+        public ActionResult MyNotifications()
+        {
+            var userId = User.Identity.GetUserId();
+            return View("Index", db.TicketNotifications.Where(t => t.RecipientId == userId).ToList());
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult MarkAsRead(int id)
+        {
+            var notification = db.TicketNotifications.Find(id);
+            notification.IsRead = true;
+            db.SaveChanges();
+
+            return RedirectToAction("Dashboard", "Home");
         }
 
         // GET: TicketNotifications/Details/5

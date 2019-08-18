@@ -8,7 +8,7 @@ namespace Spock_Bug_Tracker.Models
     public class TicketNotification
     {
         public int Id { get; set; }
-        public string TicketId { get; set; }
+        public int TicketId { get; set; }
         public DateTimeOffset Created { get; set; }
         public string Subject { get; set; }
         public string NotificationBody { get; set; }

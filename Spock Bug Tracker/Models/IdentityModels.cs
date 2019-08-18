@@ -83,6 +83,7 @@ namespace Spock_Bug_Tracker.Models
         public DbSet<TicketPriority> TicketPriorities { get; set; }
         public DbSet<TicketStatus> TicketStatuses { get; set; }
         public DbSet<TicketType> TicketTypes { get; set; }
+        public DbSet<ProjectNotification> ProjectNotifications { get; set; }
 
 
 

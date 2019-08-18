@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using Spock_Bug_Tracker.Models;
 
 namespace Spock_Bug_Tracker.Controllers
@@ -17,7 +18,7 @@ namespace Spock_Bug_Tracker.Controllers
         // GET: TicketComments
         public ActionResult Index()
         {
-            var ticketComments = db.TicketComments.Include(t => t.User);
+            var ticketComments = db.TicketComments.Include(t => t.Author);
             return View(ticketComments.ToList());
         }
 
@@ -37,27 +38,28 @@ namespace Spock_Bug_Tracker.Controllers
         }
 
         // GET: TicketComments/Create
-        public ActionResult Create()
-        {
-            ViewBag.UserId = new SelectList(db.Users, "Id", "FirstName");
-            return View();
-        }
+       // public ActionResult Create()
+        //{
+            //ViewBag.UserId = new SelectList(db.Users, "Id", "FirstName");
+           // return View();
+        //}
 
         // POST: TicketComments/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,UserId,TicketId,CommentBody,Created,AuthorId")] TicketComment ticketComment)
+        public ActionResult Create([Bind(Include = "Id,UserId,TicketId,CommentBody,Created")] TicketComment ticketComment)
         {
             if (ModelState.IsValid)
             {
+                ticketComment.AuthorId = User.Identity.GetUserId();
                 db.TicketComments.Add(ticketComment);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", "Tickets", new { id = ticketComment.TicketId });
             }
 
-            ViewBag.UserId = new SelectList(db.Users, "Id", "FirstName", ticketComment.UserId);
+            
             return View(ticketComment);
         }
 
@@ -73,7 +75,7 @@ namespace Spock_Bug_Tracker.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.UserId = new SelectList(db.Users, "Id", "FirstName", ticketComment.UserId);
+            ViewBag.UserId = new SelectList(db.Users, "Id", "FirstName", ticketComment.AuthorId);
             return View(ticketComment);
         }
 
@@ -90,7 +92,7 @@ namespace Spock_Bug_Tracker.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.UserId = new SelectList(db.Users, "Id", "FirstName", ticketComment.UserId);
+            ViewBag.UserId = new SelectList(db.Users, "Id", "FirstName", ticketComment.AuthorId);
             return View(ticketComment);
         }
 

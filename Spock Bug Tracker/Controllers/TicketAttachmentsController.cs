@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
+using Spock_Bug_Tracker.Helper;
 using Spock_Bug_Tracker.Models;
 
 namespace Spock_Bug_Tracker.Controllers
@@ -48,16 +51,31 @@ namespace Spock_Bug_Tracker.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,TicketId,UserId,Title,Description,AttachmentUrl,Created,Updated")] TicketAttachment ticketAttachment)
+        public ActionResult Create([Bind(Include="TicketId")] TicketAttachment ticketAttachment, string attachmentTitle, string attachmentDescription, HttpPostedFileBase attachment)
         {
             if (ModelState.IsValid)
             {
+                ticketAttachment.Title = attachmentTitle;
+                ticketAttachment.Description = attachmentDescription;
+                ticketAttachment.Created = DateTime.Now;
+                ticketAttachment.UserId = User.Identity.GetUserId();
+
+                //This is where i will use my attachment upload validator to decide whether this is a good file or not
+                if(ImageUploader.IsValidAttachment(attachment))
+                {
+                    var fileName = Path.GetFileName(attachment.FileName);
+                    attachment.SaveAs(Path.Combine(Server.MapPath("~/Attachments/"), fileName));
+                    ticketAttachment.AttachmentUrl = "/Attachments/" + fileName;
+                }
+
                 db.TicketAttachments.Add(ticketAttachment);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
+            ViewBag.TicketId = new SelectList(db.Tickets, "Id", "OwnerUserId", ticketAttachment.TicketId);
             ViewBag.UserId = new SelectList(db.Users, "Id", "FirstName", ticketAttachment.UserId);
+            
             return View(ticketAttachment);
         }
 

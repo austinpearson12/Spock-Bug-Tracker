@@ -19,6 +19,16 @@ namespace Spock_Bug_Tracker.Controllers
         private ProjectsHelper projectHelper = new ProjectsHelper();
 
         // GET: Projects
+
+        [Authorize]
+        public ActionResult MyIndex()
+        {
+            var userId = User.Identity.GetUserId();
+            var myProjects = projectHelper.ListUserProjects(userId);
+            return View(myProjects);
+        }
+
+        [Authorize(Roles = "Admin, Project Manager")]
         public ActionResult Index()
         {
             return View(db.Projects.ToList());
@@ -38,34 +48,19 @@ namespace Spock_Bug_Tracker.Controllers
                 return HttpNotFound();
             }
 
-            //authorization
-            var userId = User.Identity.GetUserId();
-            var userRole = roleHelper.ListUserRoles(userId).FirstOrDefault();
-            var authorized = false;
-            var projectIds = db.Users.Find(userId).Projects.Select(p => p.Id).ToList();
-            switch (userRole)
-            {
-                case "Submitter":
-                    authorized = projectIds.Contains(project.Id);
-                    break;
-                case "Developer":
-                    authorized = projectIds.Contains(project.Id);
-                    break;
-                case "Admin":
-                    authorized = true;
-                    break;
-                case "Project Manager":
-                    authorized = true;
-                    break;
-            }
-            if (authorized == true)
-            {
-                return View(project);
-            }
-            else
-            {
-                return RedirectToAction("Permissions", "Admin");
-            }
+            var allProjectManagers = roleHelper.UserInRole("Project Manager");
+            var currentProjectManagers = projectHelper.UserIsInRoleOnProject(project.Id, "Project Manager");
+            ViewBag.ProjectManagers = new MultiSelectList(allProjectManagers, "Id", "FullNameWithEmail", currentProjectManagers);
+
+            var allSubmitters = roleHelper.UserInRole("Submitter");
+            var currentSubmitters = projectHelper.UserIsInRoleOnProject(project.Id, "Submitter");
+            ViewBag.Submitters = new MultiSelectList(allSubmitters, "Id", "FullNameWithEmail", currentSubmitters);
+
+            var allDevelopers = roleHelper.UserInRole("Developer");
+            var currentDevelopers = projectHelper.UserIsInRoleOnProject(project.Id, "Developer");
+            ViewBag.Developers = new MultiSelectList(allDevelopers, "Id", "FullNameWithEmail", currentDevelopers);
+
+            return View(project);
         }
 
         // GET: Projects/Create

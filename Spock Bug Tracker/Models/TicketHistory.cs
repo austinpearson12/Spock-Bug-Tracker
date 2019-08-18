@@ -8,7 +8,7 @@ namespace Spock_Bug_Tracker.Models
     public class TicketHistory
     {
         public int Id { get; set; }
-        public string TicketId { get; set; }
+        public int TicketId { get; set; }
         public string PropertyName { get; set; }
         public string OldValue { get; set; }
         public string NewValue { get; set; }

@@ -54,7 +54,8 @@ namespace Spock_Bug_Tracker.Migrations
                     Email = "austinpearson52@yahoo.com",
                     FirstName = "Austin",
                     LastName = "Pearson",
-                    DisplayName = "austinpearson12"
+                    DisplayName = "austinpearson12",
+                    AvatarUrl = "/images/avaatar.jpg"
                 }, "Abc&123");
             }
             if (!context.Users.Any(u => u.Email == "ap@mailinator.com"))
@@ -65,7 +66,8 @@ namespace Spock_Bug_Tracker.Migrations
                     Email = "ap@mailinator.com",
                     FirstName = "Pm",
                     LastName = "Phara",
-                    DisplayName = "pmPhara12"
+                    DisplayName = "pmPhara12",
+                    AvatarUrl = "/images/avaatar.jpg"
                 }, "Abc&123");
             }
             if (!context.Users.Any(u => u.Email == "ap1@mailinator.com"))
@@ -76,7 +78,8 @@ namespace Spock_Bug_Tracker.Migrations
                     Email = "ap1@mailinator.com",
                     FirstName = "Dev",
                     LastName = "Donald",
-                    DisplayName = "DevDonald2019"
+                    DisplayName = "DevDonald2019",
+                    AvatarUrl = "/images/avaatar.jpg"
                 }, "Abc&123");
             }
             if (!context.Users.Any(u => u.Email == "ap2@mailinator.com"))
@@ -87,7 +90,8 @@ namespace Spock_Bug_Tracker.Migrations
                     Email = "ap2@mailinator.com",
                     FirstName = "Sub",
                     LastName = "Sarah",
-                    DisplayName = "SubSarah98"
+                    DisplayName = "SubSarah98",
+                    AvatarUrl = "/images/avaatar.jpg"
                 }, "Abc&123");
             }
 
