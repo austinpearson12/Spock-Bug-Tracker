@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -6,7 +7,9 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using Spock_Bug_Tracker.Helper;
 using Spock_Bug_Tracker.Models;
+using Spock_Bug_Tracker.ViewModels;
 
 namespace Spock_Bug_Tracker.Controllers
 {
@@ -15,6 +18,7 @@ namespace Spock_Bug_Tracker.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private ApplicationDbContext db = new ApplicationDbContext();
 
         public ManageController()
         {
@@ -52,6 +56,7 @@ namespace Spock_Bug_Tracker.Controllers
 
         //
         // GET: /Manage/Index
+        [Authorize(Roles = "Admin, Project Manager, Developer, Submitter")]
         public async Task<ActionResult> Index(ManageMessageId? message)
         {
             ViewBag.StatusMessage =
@@ -64,16 +69,77 @@ namespace Spock_Bug_Tracker.Controllers
                 : "";
 
             var userId = User.Identity.GetUserId();
-            var model = new IndexViewModel
+            var user = db.Users.Find(userId);
+
+            var userProfileViewModel = new UserProfileViewModel
             {
-                HasPassword = HasPassword(),
-                PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
-                TwoFactor = await UserManager.GetTwoFactorEnabledAsync(userId),
-                Logins = await UserManager.GetLoginsAsync(userId),
-                BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId)
+                IndexViewModel = new IndexViewModel
+                {
+                    HasPassword = HasPassword(),
+                    PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
+                    TwoFactor = await UserManager.GetTwoFactorEnabledAsync(userId),
+                    Logins = await UserManager.GetLoginsAsync(userId),
+                    BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId)
+                },
+                UserViewModel = new UserViewModel
+                {
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Email = user.Email,
+                    AvatarUrl = user.AvatarUrl
+                },
+                ChangePasswordViewModel = new ChangePasswordViewModel
+                {
+                    ConfirmPassword = "",
+                    NewPassword = "",
+                    OldPassword = user.PasswordHash
+                }
             };
-            return View(model);
+            
+            return View(userProfileViewModel);
         }
+
+        //Post: /Manage/Index
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Index(UserViewModel userViewModel, ChangePasswordViewModel changePasswordViewModel)
+        {
+            if (userViewModel.AvatarUrl != null)
+            {
+                if (ImageUploader.isWebFriendlyImage(userViewModel.Avatar))
+                {
+                    var fileName = Path.GetFileName(userViewModel.Avatar.FileName).Replace(' ', '_');
+                    userViewModel.Avatar.SaveAs(Path.Combine(Server.MapPath("~/Avatar/"), fileName));
+                    userViewModel.AvatarUrl = "/Avatar/" + fileName;
+                }
+            }
+
+            //var user = db.Users.FirstOrDefault(u => u.Email == viewModel.UserViewModel.Email);
+            var userId = User.Identity.GetUserId();
+            var user = db.Users.Find(userId);
+            user.FirstName = userViewModel.FirstName;
+            user.LastName = userViewModel.LastName;
+            user.Email = userViewModel.Email;
+            user.AvatarUrl = userViewModel.AvatarUrl;
+            db.SaveChanges();
+
+            if (changePasswordViewModel.NewPassword != null)
+            {
+                var result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), changePasswordViewModel.OldPassword, changePasswordViewModel.NewPassword);
+                if (result.Succeeded)
+                {
+                    var userPass = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+                    if (userPass != null)
+                    {
+                        await SignInManager.SignInAsync(userPass, isPersistent: false, rememberBrowser: false);
+                    }
+                }
+                AddErrors(result);
+            }
+            return RedirectToAction("Index", new { Message = ManageMessageId.ChangePasswordSuccess });
+        }
+
+
 
         //
         // POST: /Manage/RemoveLogin

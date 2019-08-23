@@ -19,6 +19,7 @@ namespace Spock_Bug_Tracker.Models
             public int TicketStatusId { get; set; }
             public string OwnerUserId { get; set; }
             public string AssignedToUserId { get; set; }
+            public bool Deleted { get; set; }
 
         //Virtual Nav Section
             public virtual TicketType TicketType { get; set; }   

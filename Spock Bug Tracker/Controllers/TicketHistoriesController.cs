@@ -57,6 +57,7 @@ namespace Spock_Bug_Tracker.Controllers
                 return RedirectToAction("Index");
             }
 
+            ViewBag.TicketId = new SelectList(db.Tickets, "Id", "OwnerUserId", ticketHistory.TicketId);
             ViewBag.UserId = new SelectList(db.Users, "Id", "FirstName", ticketHistory.UserId);
             return View(ticketHistory);
         }
@@ -90,6 +91,8 @@ namespace Spock_Bug_Tracker.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+
+            ViewBag.TicketId = new SelectList(db.Tickets, "Id", "OwnerUserId", ticketHistory.TicketId);
             ViewBag.UserId = new SelectList(db.Users, "Id", "FirstName", ticketHistory.UserId);
             return View(ticketHistory);
         }

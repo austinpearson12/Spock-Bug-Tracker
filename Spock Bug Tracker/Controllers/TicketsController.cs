@@ -25,8 +25,8 @@ namespace Spock_Bug_Tracker.Controllers
         [Authorize]
         public ActionResult Index()
         {
-            var tickets = db.Tickets.Include(t => t.AssignedToUser).Include(t => t.OwnerUser).Include(t => t.Project).Include(t => t.TicketPriority).Include(t => t.TicketStatus).Include(t => t.TicketType);
-            return View(tickets.ToList());
+            db.Tickets.Where(t => !t.Deleted).OrderBy(t => t.TicketPriority.Importance).ToList();
+            return View(projectsHelper.ListUserTickets(User.Identity.GetUserId()));
         }
 
 

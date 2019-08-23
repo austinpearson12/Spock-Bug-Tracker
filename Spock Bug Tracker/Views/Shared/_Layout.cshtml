@@ -183,7 +183,7 @@
                             <ul class="list-unstyled">
                                 <li class="divider"></li>
                                 <li>
-                                    <a role="menuitem" tabindex="-1" href="pages-user-profile.html"><i class="fa fa-user"></i> My Profile</a>
+                                    <a role="menuitem" tabindex="-1" href="@Url.Action("Index", "Manage")"><i class="fa fa-user"></i> My Profile</a>
                                 </li>                                
                                 <li>
                                     <a role="menuitem" tabindex="-1" href="@Url.Action("Login", "Home")"><i class="fa fa-power-off"></i> Logout</a>
@@ -237,15 +237,7 @@
                                         </a>
                                     </li>
                                 }
-                                else if (User.IsInRole("Project Manager"))
-                                {
-                                    <li class="nav-active">
-                                        <a href="@Url.Action("Index", "Projects")">
-                                            <i class="fa fa-home" aria-hidden="true"></i>
-                                            <span>Projects Index</span>
-                                        </a>
-                                    </li>
-                                }
+
                                 @if ((User.IsInRole("Submitter")) || (User.IsInRole("Developer")) || (User.IsInRole("Project Manager")))
                                 {
                                     <li class="nav-active">
@@ -255,7 +247,7 @@
                                         </a>
                                     </li>
                                     <li class="nav-active">
-                                        <a href="@Url.Action("MyIndex", "Tickets")">
+                                        <a href="@Url.Action("Index", "Tickets")">
                                             <i class="fa fa-home" aria-hidden="true"></i>
                                             <span>My Tickets</span>
                                         </a>

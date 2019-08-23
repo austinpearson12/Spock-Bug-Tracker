@@ -64,6 +64,26 @@ namespace Spock_Bug_Tracker.Controllers
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
+        [AllowAnonymous]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> DemoLoginAsync(string demoEmail)
+        {
+            var email = WebConfigurationManager.AppSettings[demoEmail];
+            var password = WebConfigurationManager.AppSettings["DemoUserPassword"];
+
+            var result = await SignInManager.PasswordSignInAsync(email, password, false, shouldLockout: false);
+
+            switch (result)
+            {
+                case SignInStatus.Success:
+                    return RedirectToAction("Dashboard", "Home");
+
+                case SignInStatus.Failure:
+                default:
+                    return RedirectToAction("Login", "Home");
+            }
+        }
 
         //
         // POST: /Account/Login
@@ -225,7 +245,7 @@ namespace Spock_Bug_Tracker.Controllers
             if (ModelState.IsValid)
             {
                 var user = await UserManager.FindByNameAsync(model.Email);
-                if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
+                if (user == null)
                 {
                     // Don't reveal that the user does not exist or is not confirmed
                     return View("ForgotPasswordConfirmation");

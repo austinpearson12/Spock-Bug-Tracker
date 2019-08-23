@@ -7,6 +7,7 @@ namespace Spock_Bug_Tracker.Migrations
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
+    using System.Web.Configuration;
 
     internal sealed class Configuration : DbMigrationsConfiguration<Spock_Bug_Tracker.Models.ApplicationDbContext>
     {
@@ -41,6 +42,7 @@ namespace Spock_Bug_Tracker.Migrations
                 roleManager.Create(new IdentityRole { Name = "Submitter" });
             }
 
+            
 
 
             var userManager = new UserManager<ApplicationUser>(
@@ -94,18 +96,84 @@ namespace Spock_Bug_Tracker.Migrations
                     AvatarUrl = "/images/avaatar.jpg"
                 }, "Abc&123");
             }
+            //Demo Users
+            if (!context.Users.Any(u => u.Email == "demoadmin@mailinator.com"))
+            {
+                userManager.Create(new ApplicationUser
+                {
+                    UserName = "demoadmin@mailinator.com",
+                    Email = "demoadmin@mailinator.com",
+                    FirstName = "Demo",
+                    LastName = "Admin",
+                    DisplayName = "DemoAdmin2019",
+                    AvatarUrl = "/images/avaatar.jpg"
+                }, WebConfigurationManager.AppSettings["DemoUserPassword"]);
+            }
+            if (!context.Users.Any(u => u.Email == "demopm@mailinator.com"))
+            {
+                userManager.Create(new ApplicationUser
+                {
+                    UserName = "demopm@mailinator.com",
+                    Email = "demopm@mailinator.com",
+                    FirstName = "Demo",
+                    LastName = "Pm",
+                    DisplayName = "DemoPm2019",
+                    AvatarUrl = "/images/avaatar.jpg"
+                }, WebConfigurationManager.AppSettings["DemoUserPassword"]);
+            }
+            if (!context.Users.Any(u => u.Email == "demodev@mailinator.com"))
+            {
+                userManager.Create(new ApplicationUser
+                {
+                    UserName = "demodev@mailinator.com",
+                    Email = "demodev@mailinator.com",
+                    FirstName = "Demo",
+                    LastName = "Dev",
+                    DisplayName = "DemoDev2019",
+                    AvatarUrl = "/images/avaatar.jpg"
+                }, WebConfigurationManager.AppSettings["DemoUserPassword"]);
+            }
+            if (!context.Users.Any(u => u.Email == "demosub@mailinator.com"))
+            {
+                userManager.Create(new ApplicationUser
+                {
+                    UserName = "demosub@mailinator.com",
+                    Email = "demosub@mailinator.com",
+                    FirstName = "Demo",
+                    LastName = "Sub",
+                    DisplayName = "DemoSub2019",
+                    AvatarUrl = "/images/avaatar.jpg"
+                }, WebConfigurationManager.AppSettings["DemoUserPassword"]);
+            }
+
+
+
 
             var userId = userManager.FindByEmail("austinpearson52@yahoo.com").Id;
+            userManager.AddToRole(userId, "Admin");
+
+            userId = userManager.FindByEmail("demoadmin@mailinator.com").Id;
             userManager.AddToRole(userId, "Admin");
 
             userId = userManager.FindByEmail("ap@mailinator.com").Id;
             userManager.AddToRole(userId, "Project Manager");
 
+            userId = userManager.FindByEmail("demopm@mailinator.com").Id;
+            userManager.AddToRole(userId, "Project Manager");
+
             userId = userManager.FindByEmail("ap1@mailinator.com").Id;
+            userManager.AddToRole(userId, "Developer");
+
+            userId = userManager.FindByEmail("demodev@mailinator.com").Id;
             userManager.AddToRole(userId, "Developer");
 
             userId = userManager.FindByEmail("ap2@mailinator.com").Id;
             userManager.AddToRole(userId, "Submitter");
+
+            userId = userManager.FindByEmail("demosub@mailinator.com").Id;
+            userManager.AddToRole(userId, "Submitter");
+
+
 
             context.TicketPriorities.AddOrUpdate(
                 t => t.Name,

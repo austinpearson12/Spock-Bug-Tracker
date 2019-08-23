@@ -1,87 +1,138 @@
-﻿@model Spock_Bug_Tracker.Models.IndexViewModel
-@{
-    ViewBag.Title = "Manage";
-}
+﻿@using Spock_Bug_Tracker.ViewModels
+@using Microsoft.AspNet.Identity
+@using Spock_Bug_Tracker.Helper
+@using Spock_Bug_Tracker.Models
+@model UserProfileViewModel
 
-<h2>@ViewBag.Title.</h2>
+        @{
+            var userId = User.Identity.GetUserId();
+            var db = new ApplicationDbContext();
+            var user = db.Users.Find(userId);
+        }
 
-<p class="text-success">@ViewBag.StatusMessage</p>
-<div>
-    <h4>Change your account settings</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>Password:</dt>
-        <dd>
-            [
-            @if (Model.HasPassword)
-            {
-                @Html.ActionLink("Change your password", "ChangePassword")
-            }
-            else
-            {
-                @Html.ActionLink("Create", "SetPassword")
-            }
-            ]
-        </dd>
-        <dt>External Logins:</dt>
-        <dd>
-            @Model.Logins.Count [
-            @Html.ActionLink("Manage", "ManageLogins") ]
-        </dd>
-        @*
-            Phone Numbers can used as a second factor of verification in a two-factor authentication system.
-             
-             See <a href="https://go.microsoft.com/fwlink/?LinkId=403804">this article</a>
-                for details on setting up this ASP.NET application to support two-factor authentication using SMS.
-             
-             Uncomment the following block after you have set up two-factor authentication
-        *@
-        @*  
-            <dt>Phone Number:</dt>
-            <dd>
-                @(Model.PhoneNumber ?? "None")
-                @if (Model.PhoneNumber != null)
-                {
-                    <br />
-                    <text>[&nbsp;&nbsp;@Html.ActionLink("Change", "AddPhoneNumber")&nbsp;&nbsp;]</text>
-                    using (Html.BeginForm("RemovePhoneNumber", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                    {
-                        @Html.AntiForgeryToken()
-                        <text>[<input type="submit" value="Remove" class="btn-link" />]</text>
-                    }
-                }
-                else
-                {
-                    <text>[&nbsp;&nbsp;@Html.ActionLink("Add", "AddPhoneNumber")
-                }
-            </dd>
-        *@
-        <dt>Two-Factor Authentication:</dt>
-        <dd>
-            <p>
-                There are no two-factor authentication providers configured. See <a href="https://go.microsoft.com/fwlink/?LinkId=403804">this article</a>
-                for details on setting up this ASP.NET application to support two-factor authentication.
-            </p>
-            @*@if (Model.TwoFactor)
-                {
-                    using (Html.BeginForm("DisableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                    {
-                        @Html.AntiForgeryToken()
-                        <text>Enabled
-                        <input type="submit" value="Disable" class="btn btn-link" />
-                        </text>
-                    }
-                }
-                else
-                {
-                    using (Html.BeginForm("EnableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                    {
-                        @Html.AntiForgeryToken()
-                        <text>Disabled
-                        <input type="submit" value="Enable" class="btn btn-link" />
-                        </text>
-                    }
-                }*@
-        </dd>
-    </dl>
+
+
+
+
+<div class="row">
+    <div class="col-md-4 col-lg-3">
+        @if (User.Identity.IsAuthenticated)
+        {
+
+            var AvatarUrl = db.Users.Find(userId).AvatarUrl;
+            var fullName = db.Users.Find(userId).FullName;
+            var roleHelper = new UserRolesHelper();
+            <section class="panel">
+                <div class="panel-body">
+                    <div class="thumb-info mb-md">
+                        <img src="@AvatarUrl" a class="rounded img-responsive" alt="">
+                        <div class="thumb-info-title">
+                            <span class="thumb-info-inner">@fullName</span>
+                            <span class="thumb-info-type">
+                                @if (roleHelper.ListUserRoles(userId).FirstOrDefault() == "Project Manager")
+                                {
+                                    <span>Project Manager</span>
+                                }
+                                else
+                                {
+                                    @roleHelper.ListUserRoles(userId).FirstOrDefault();
+                                }
+                            </span>
+                        </div>
+                    </div>
+
+                    <hr class="dotted short">
+
+                    <div class="social-icons-list">
+                        <a rel="tooltip" data-placement="bottom" target="_blank" href="http://www.facebook.com" data-original-title="Facebook"><i class="fa fa-facebook"></i><span>Facebook</span></a>
+                        <a rel="tooltip" data-placement="bottom" href="http://www.twitter.com" data-original-title="Twitter"><i class="fa fa-twitter"></i><span>Twitter</span></a>
+                        <a rel="tooltip" data-placement="bottom" href="http://www.linkedin.com" data-original-title="Linkedin"><i class="fa fa-linkedin"></i><span>Linkedin</span></a>
+                    </div>
+
+                </div>
+            </section>
+        }
+    </div>
+
+    <div class="col-md-8 col-lg-6">
+        @using (Html.BeginForm("Index", "Manage", FormMethod.Post, new { enctype = "Multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.Hidden("UserViewModel.AvatarUrl", Model.UserViewModel.AvatarUrl)
+            <section class="panel">
+                <header class="panel-heading">
+                    <div class="panel-actions">
+                        <a href="#" class="fa fa-caret-down"></a>
+                        <a href="#" class="fa fa-times"></a>
+                    </div>
+
+                    <h2 class="panel-title">Edit</h2>
+                </header>
+
+                <div class="panel-body">
+
+                    <form class="form-horizontal" method="get">
+                        <h4 class="mb-xlg">Personal Information</h4>
+                        <fieldset>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.UserViewModel.FirstName, htmlAttributes: new { @class = "control-label col-md-12" })
+                                <div class="col-md-8">
+                                    @Html.EditorFor(model => model.UserViewModel.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.UserViewModel.LastName, htmlAttributes: new { @class = "control-label col-md-12" })
+                                <div class="col-md-8">
+                                    @Html.EditorFor(model => model.UserViewModel.LastName, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.UserViewModel.DisplayName, htmlAttributes: new { @class = "control-label col-md-12" })
+                                <div class="col-md-8">
+                                    @Html.EditorFor(model => model.UserViewModel.DisplayName, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.UserViewModel.Email, htmlAttributes: new { @class = "control-label col-md-12" })
+                                <div class="col-md-8">
+                                    @Html.EditorFor(model => model.UserViewModel.Email, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.UserViewModel.Avatar, htmlAttributes: new { @class = "control-label col-md-12" })
+                                <div class="col-md-8">
+                                    <input type="file" name="UserViewModel.Avatar" calss="filestyle" data-dragdrop="false" data-btnClass="btn-success" data-buttonBefore="true" />
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <hr class="dotted tall">
+                        <h4 class="mb-xlg">Change Password</h4>
+                        <fieldset class="mb-xl">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.ChangePasswordViewModel.OldPassword, new { @class = "col-md-12 control-label" })
+                                <div class="col-md-8">
+                                    @Html.PasswordFor(model => model.ChangePasswordViewModel.OldPassword, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.ChangePasswordViewModel.NewPassword, new { @class = "col-md-12 control-label" })
+                                <div class="col-md-8">
+                                    @Html.PasswordFor(model => model.ChangePasswordViewModel.NewPassword, new { @class = "form-control" })
+                                </div>
+                            </div>
+                        </fieldset>
+                        <div class="panel-footer">
+                            <div class="row">
+                                <div class="col-md-9 col-md-offset-3">
+                                    <button type="submit" class="btn btn-primary">Save</button>
+                                    <button type="reset" class="btn btn-default">Reset</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </section>
+        }
+    </div>
 </div>

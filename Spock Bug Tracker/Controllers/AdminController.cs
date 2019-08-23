@@ -18,9 +18,8 @@ namespace Spock_Bug_Tracker.Controllers
         // GET: Admin
         public ActionResult UserIndex()
         {
-            var users = db.Users.Select(u => new UserProfileViewModel
-            {
-                Id = u.Id,
+            var users = db.Users.Select(u => new UserViewModel
+            {               
                 FirstName = u.FirstName,
                 LastName = u.LastName,
                 DisplayName = u.DisplayName,
@@ -58,9 +57,8 @@ namespace Spock_Bug_Tracker.Controllers
         }
         public ActionResult ManageRoles()
         {
-            var users = db.Users.Select(u => new UserProfileViewModel
+            var users = db.Users.Select(u => new UserViewModel
             {
-                Id = u.Id,
                 FirstName = u.FirstName,
                 LastName = u.LastName,
                 DisplayName = u.DisplayName,

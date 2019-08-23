@@ -20,6 +20,10 @@ namespace Spock_Bug_Tracker.Controllers
         {
             return View();
         }
+        public ActionResult DemoUser()
+        {
+            return View();
+        }
 
         public ActionResult Register()
         {
