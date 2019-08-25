@@ -1,8 +1,7 @@
-﻿@using Spock_Bug_Tracker.ViewModels
-@using Microsoft.AspNet.Identity
+﻿@using Microsoft.AspNet.Identity
 @using Spock_Bug_Tracker.Helper
 @using Spock_Bug_Tracker.Models
-@model UserProfileViewModel
+@model Spock_Bug_Tracker.ViewModels.UserViewModel
 
         @{
             var userId = User.Identity.GetUserId();
@@ -58,7 +57,7 @@
         @using (Html.BeginForm("Index", "Manage", FormMethod.Post, new { enctype = "Multipart/form-data" }))
         {
             @Html.AntiForgeryToken()
-            @Html.Hidden("UserViewModel.AvatarUrl", Model.UserViewModel.AvatarUrl)
+            @Html.Hidden("UserViewModel.AvatarUrl", Model.AvatarUrl)
             <section class="panel">
                 <header class="panel-heading">
                     <div class="panel-actions">
@@ -75,31 +74,31 @@
                         <h4 class="mb-xlg">Personal Information</h4>
                         <fieldset>
                             <div class="form-group">
-                                @Html.LabelFor(model => model.UserViewModel.FirstName, htmlAttributes: new { @class = "control-label col-md-12" })
+                                @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-12" })
                                 <div class="col-md-8">
-                                    @Html.EditorFor(model => model.UserViewModel.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
                                 </div>
                             </div>
                             <div class="form-group">
-                                @Html.LabelFor(model => model.UserViewModel.LastName, htmlAttributes: new { @class = "control-label col-md-12" })
+                                @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "control-label col-md-12" })
                                 <div class="col-md-8">
-                                    @Html.EditorFor(model => model.UserViewModel.LastName, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
                                 </div>
                             </div>
                             <div class="form-group">
-                                @Html.LabelFor(model => model.UserViewModel.DisplayName, htmlAttributes: new { @class = "control-label col-md-12" })
+                                @Html.LabelFor(model => model.DisplayName, htmlAttributes: new { @class = "control-label col-md-12" })
                                 <div class="col-md-8">
-                                    @Html.EditorFor(model => model.UserViewModel.DisplayName, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.EditorFor(model => model.DisplayName, new { htmlAttributes = new { @class = "form-control" } })
                                 </div>
                             </div>
                             <div class="form-group">
-                                @Html.LabelFor(model => model.UserViewModel.Email, htmlAttributes: new { @class = "control-label col-md-12" })
+                                @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-12" })
                                 <div class="col-md-8">
-                                    @Html.EditorFor(model => model.UserViewModel.Email, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
                                 </div>
                             </div>
                             <div class="form-group">
-                                @Html.LabelFor(model => model.UserViewModel.Avatar, htmlAttributes: new { @class = "control-label col-md-12" })
+                                @Html.LabelFor(model => model.Avatar, htmlAttributes: new { @class = "control-label col-md-12" })
                                 <div class="col-md-8">
                                     <input type="file" name="UserViewModel.Avatar" calss="filestyle" data-dragdrop="false" data-btnClass="btn-success" data-buttonBefore="true" />
                                 </div>

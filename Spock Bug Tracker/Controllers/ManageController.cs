@@ -71,7 +71,7 @@ namespace Spock_Bug_Tracker.Controllers
             var userId = User.Identity.GetUserId();
             var user = db.Users.Find(userId);
 
-            var userProfileViewModel = new UserProfileViewModel
+            var userViewModel = new UserViewModel
             {
                 IndexViewModel = new IndexViewModel
                 {
@@ -81,13 +81,6 @@ namespace Spock_Bug_Tracker.Controllers
                     Logins = await UserManager.GetLoginsAsync(userId),
                     BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId)
                 },
-                UserViewModel = new UserViewModel
-                {
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
-                    Email = user.Email,
-                    AvatarUrl = user.AvatarUrl
-                },
                 ChangePasswordViewModel = new ChangePasswordViewModel
                 {
                     ConfirmPassword = "",
@@ -96,7 +89,7 @@ namespace Spock_Bug_Tracker.Controllers
                 }
             };
             
-            return View(userProfileViewModel);
+            return View(userViewModel);
         }
 
         //Post: /Manage/Index

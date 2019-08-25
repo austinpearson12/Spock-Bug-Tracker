@@ -1,19 +1,20 @@
 ﻿@using Spock_Bug_Tracker.ViewModels
 @using Spock_Bug_Tracker.Helper
-
+@using Spock_Bug_Tracker.Models
 @model IEnumerable<UserProfileViewModel>
 
 
 
 <h2>UserIndex</h2>
 <style>
-    .avatar{
+    .avatar {
         max-height: 30px;
         max-width: 30px;
     }
 </style>
-@{ 
+@{
     var roleHelper = new UserRolesHelper();
+
 }
 
 <section class="panel">
@@ -21,6 +22,7 @@
         <div class="panel-actions">
             <a href="#" class="fa fa-caret-down"></a>
             <a href="#" class="fa fa-times"></a>
+            
         </div>
 
         <h2 class="panel-title">Users</h2>
@@ -46,45 +48,49 @@
             <tbody>
                 @foreach (var user in Model)
                 {
+                     
+                        var role = roleHelper.ListUserRoles(user.Id);
 
-                <tr>
-                    <td class="avatar">
-                        @if (!string.IsNullOrEmpty(user.AvatarUrl))
-                        {
 
-                            <img src="@Url.Content(user.AvatarUrl)" class="img-responsive" />
-                        }
-                        else
-                        {
-                            <img src="@Url.Content("~/images/avaatar.jpg")" class="img-responsive" />
-                        }
-                    </td>
-                    <td>
-                        @user.Email
-                    </td>
-                    <td>
-                        @user.FirstName
-                    </td>
-                    <td>
-                        @user.LastName
-                    </td>
-                    <td>
-                        @user.DisplayName
-                    </td>
-                    <td>
-                        @roleHelper.ListUserRoles(user.Id).FirstOrDefault()
+                    
+                    <tr>
+                        <td class="avatar">
+                            @if (!string.IsNullOrEmpty(user.AvatarUrl))
+                            {
 
-                    </td>
-                    <td>
-                        @Html.ActionLink("Manage Role", "ManageUserRole", "Admin", new { userId = user.Id }, null)|
-                        @Html.ActionLink("Manage Projects", "ManageUserProjects", "Admin", new { userId = user.Id }, null)
-                    </td>
-                </tr>
+                                <img src="@Url.Content(user.AvatarUrl)" class="img-responsive" />
+                            }
+                            else
+                            {
+                                <img src="@Url.Content("~/images/avaatar.jpg")" class="img-responsive" />
+                            }
+                        </td>
+                        <td>
+                            @user.Email
+                        </td>
+                        <td>
+                            @user.FirstName
+                        </td>
+                        <td>
+                            @user.LastName
+                        </td>
+                        <td>
+                            @user.DisplayName
+                        </td>
+                        <td>
+                            @role.FirstOrDefault()
+
+                        </td>
+                        <td>
+                            @Html.ActionLink("Manage Role", "ManageUserRole", "Admin", new { userId = user.Id }, null)|
+                            @Html.ActionLink("Manage Projects", "ManageUserProjects", "Admin", new { userId = user.Id }, null)
+                        </td>
+                    </tr>
 
 
                 }
             </tbody>
         </table>
     </div>
-            
+
 </section>
