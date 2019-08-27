@@ -10,6 +10,7 @@
         var userId = User.Identity.GetUserId();
         var db = new ApplicationDbContext();
         var user = db.Users.Find(userId);
+        var notificationHelper = new NotificationHelper();
     }
 
     <!-- Basic -->
@@ -98,13 +99,13 @@
 
                         <div class="dropdown-menu notification-menu">
                             <div class="notification-title">
-                                <span class="pull-right label label-default">@NotificationHelper.GetAllUserNotificationCount()</span>
+                                <span class="pull-right label label-default">@NotificationHelper.GetNewUserNotificationCount()</span>
                                 Notifications
                             </div>
 
                             <div class="content">
                                 <ul>
-                                    @foreach (var notification in NotificationHelper.GetUnreadUserNotifications())
+                                    @foreach (var notification in notificationHelper.GetUnreadUserNotifications())
                                     {
                                     <li>
                                         @using (Html.BeginForm("MarkAsRead", "TicketNotifications"))
@@ -186,7 +187,7 @@
                                     <a role="menuitem" tabindex="-1" href="@Url.Action("Index", "Manage")"><i class="fa fa-user"></i> My Profile</a>
                                 </li>                                
                                 <li>
-                                    <a role="menuitem" tabindex="-1" href="@Url.Action("Login", "Home")"><i class="fa fa-power-off"></i> Logout</a>
+                                    <a role="menuitem" tabindex="-1" href="@Url.Action("Login", "Account")"><i class="fa fa-power-off"></i> Logout</a>
                                 </li>
                             </ul>
                         </div>
@@ -225,14 +226,14 @@
                                 {
                                     <li class="nav-active">
                                         <a href="@Url.Action("UserIndex", "Admin")">
-                                            <i class="fa fa-home" aria-hidden="true"></i>
+                                            <i class="fa fa-users" aria-hidden="true"></i>
                                             <span>User Index</span>
                                         </a>
                                     </li>
 
                                     <li class="nav-active">
                                         <a href="@Url.Action("Index", "Projects")">
-                                            <i class="fa fa-home" aria-hidden="true"></i>
+                                            <i class="fa fa-archive" aria-hidden="true"></i>
                                             <span>Projects Index</span>
                                         </a>
                                     </li>
@@ -242,13 +243,13 @@
                                 {
                                     <li class="nav-active">
                                         <a href="@Url.Action("MyIndex", "Projects")">
-                                            <i class="fa fa-home" aria-hidden="true"></i>
+                                            <i class="fa fa-archive" aria-hidden="true"></i>
                                             <span>My Projects</span>
                                         </a>
                                     </li>
                                     <li class="nav-active">
                                         <a href="@Url.Action("Index", "Tickets")">
-                                            <i class="fa fa-home" aria-hidden="true"></i>
+                                            <i class="fa fa-ticket" aria-hidden="true"></i>
                                             <span>My Tickets</span>
                                         </a>
                                     </li>
@@ -257,7 +258,7 @@
                                 {
                                     <li class="nav-active">
                                         <a href="@Url.Action("Index", "Tickets")">
-                                            <i class="fa fa-home" aria-hidden="true"></i>
+                                            <i class="fa fa-ticket" aria-hidden="true"></i>
                                             <span>Tickets Index</span>
                                         </a>
                                     </li>
@@ -266,7 +267,7 @@
                                 {
                                     <li class="nav-active">
                                         <a href="@Url.Action("Create", "Tickets")">
-                                            <i class="fa fa-home" aria-hidden="true"></i>
+                                            <i class="fa fa-pencil" aria-hidden="true"></i>
                                             <span>Create Ticket</span>
                                         </a>
                                     </li>

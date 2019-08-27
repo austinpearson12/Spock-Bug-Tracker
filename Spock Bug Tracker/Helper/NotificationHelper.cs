@@ -50,9 +50,9 @@ namespace Spock_Bug_Tracker.Helper
             var notification = new TicketNotification
             {
                 Created = DateTime.Now,
-                Subject = $"You were unassigned from Ticket Id {newTicket.Id} on {DateTime.Now}",
+                Subject = $"You were assigned to Ticket Id {newTicket.Id} on {DateTime.Now}",
                 IsRead = false,
-                RecipientId = oldTicket.AssignedToUserId,
+                RecipientId = newTicket.AssignedToUserId,
                 SenderId = HttpContext.Current.User.Identity.GetUserId(),
                 NotificationBody = $"Please acknowledge that you have read this notification by marking it Read",
                 TicketId = newTicket.Id
@@ -61,7 +61,7 @@ namespace Spock_Bug_Tracker.Helper
             db.TicketNotifications.Add(notification);
             db.SaveChanges();
         }
-        public static List<TicketNotification>GetUnreadUserNotifications()
+        public List<TicketNotification>GetUnreadUserNotifications()
         {
             var userId = HttpContext.Current.User.Identity.GetUserId();
             return db.TicketNotifications.Where(t => t.RecipientId == userId && !t.IsRead).ToList();

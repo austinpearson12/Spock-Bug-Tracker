@@ -1,5 +1,6 @@
 ﻿@using Spock_Bug_Tracker.Helper
 @using Microsoft.AspNet.Identity
+@using Spock_Bug_Tracker.Models
 
 @model Spock_Bug_Tracker.Models.Ticket
 
@@ -124,7 +125,7 @@
                     <div class="input-group mb-3">
                         <input type="text" class="form-control" name="CommentBody" placeholder="Enter message" />
                         <span class="input-group-append">
-                            <button class="btn btn-success" type="submit"><i class="fa fa-pencil"></i></button>
+                            <button class="btn btn-primary" type="submit"><i class="fa fa-pencil"></i></button>
                         </span>
                     </div>
                 }
@@ -249,18 +250,30 @@
                 </header>
                 <div class="panel-body">
                     <div class="timeline timeline-simple mt-xlg mb-md">
-                        <div class="tm-body">                           
+                        <div class="tm-body">
                             <ol class="tm-items">
                                 @foreach (var history in Model.TicketHistories.OrderByDescending(h => h.Created))
-                                {                                    
+                                {
+                                    var db = new ApplicationDbContext();
+                                    var historyUser = db.Users.Where(u => u.Id == history.UserId).FirstOrDefault();
                                     <li>
                                         <div class="tm-box">
-                                            <p class="text-muted mb-none">(@history.Created).format('MM dd yyyy')</p>
-                                            <p>
-                                                It's awesome when we find a good solution for our projects, JSOFT Admin is <span class="text-primary">#awesome</span>
-                                            </p>
+                                            <p class="text-muted mb-none">(@history.Created)</p>
+                                            @if (history.PropertyName == "AssignedToUserId" && history.OldValue == null)
+                                            {
+                                                <p class="lead">
+                                                    "@TicketHistoryHelper.GetHistoryDataFromId(history.NewValue ?? "", history.PropertyName)" was set as the initial Assigned Developer.
+                                                </p>
+                                            }
+                                            else
+                                            {
+                                                <p class="lead">
+                                                    The @TicketHistoryHelper.GetPropertyName(history.PropertyName) was changed from "@TicketHistoryHelper.GetHistoryDataFromId(history.OldValue ?? "", history.PropertyName)" to "@TicketHistoryHelper.GetHistoryDataFromId(history.NewValue ?? "", history.PropertyName)".
+                                                </p>
+                                            }
                                         </div>
-                                    </li>                                   
+                                    </li>
+
                                 }
                             </ol>
                         </div>

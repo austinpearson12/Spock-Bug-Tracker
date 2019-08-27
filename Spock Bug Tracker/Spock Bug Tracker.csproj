@@ -1779,6 +1779,7 @@
     <Content Include="images\!sample-user.jpg" />
     <Content Include="images\apple-touch-icon-precomposed.png" />
     <Content Include="images\arrows.png" />
+    <Content Include="images\Asheville-NC-Skyline-625x417.jpg" />
     <Content Include="images\avaatar.jpg" />
     <Content Include="images\blog-image-1.jpg" />
     <Content Include="images\blog-image-2.jpg" />
@@ -1793,6 +1794,7 @@
     <Content Include="images\logo-default.png" />
     <Content Include="images\logo-light.png" />
     <Content Include="images\logo.png" />
+    <Content Include="images\mayflyedit.jpg" />
     <Content Include="images\patterns\az_subtle.png" />
     <Content Include="images\patterns\blizzard.png" />
     <Content Include="images\patterns\bright_squares.png" />
@@ -1827,6 +1829,7 @@
     <Content Include="images\projects\project-6.jpg" />
     <Content Include="images\projects\project-7.jpg" />
     <Content Include="images\projects\project.jpg" />
+    <Content Include="images\web-backgrounds-27.jpg" />
     <Content Include="images\xls.png" />
     <Content Include="images\xlsx.png" />
     <Content Include="images\zip.png" />

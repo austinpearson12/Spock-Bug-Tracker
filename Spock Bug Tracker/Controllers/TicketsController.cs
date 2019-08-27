@@ -18,7 +18,7 @@ namespace Spock_Bug_Tracker.Controllers
         private UserRolesHelper roleHelper = new UserRolesHelper();
         private TicketHelper ticketHelper = new TicketHelper();
         private ProjectsHelper projectsHelper = new ProjectsHelper();
-
+        private TicketHistoryHelper ticketHistoryHelper = new TicketHistoryHelper();
 
 
         // GET: Tickets
@@ -115,7 +115,7 @@ namespace Spock_Bug_Tracker.Controllers
         }
 
         // GET: Tickets/Edit/5
-        [Authorize]
+        [Authorize(Roles="Admin, Project Manager, Submitter, Developer")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -180,16 +180,23 @@ namespace Spock_Bug_Tracker.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Title,Description,Created,Updated,TicketTypeId,ProjectId,TicketPriorityId,TicketStatusId,OwnerUserId,AssignedToUserId")] Ticket ticket)
+        public ActionResult Edit([Bind(Include = "Id,Title,Description,Created,Updated,TicketTypeId,TicketPriorityId,ProjectId,TicketStatusId,OwnerUserId,AssignedToUserId")] Ticket ticket)
         {
             if (ModelState.IsValid)
             {
                 var oldTicket = db.Tickets.AsNoTracking().FirstOrDefault(t => t.Id == ticket.Id);
 
+                if (oldTicket.TicketStatusId == ticket.TicketStatusId)
+                {
+                    ticket.TicketStatusId = ticketHelper.GetNewTicketStatus(oldTicket.AssignedToUserId, ticket.AssignedToUserId);
+                }
+                NotificationHelper.CreateAssignmentNotification(oldTicket, ticket);
+
+                ticketHistoryHelper.RecordTicketChanges(oldTicket, ticket);
+
+                ticket.Updated = DateTime.Now;
                 db.Entry(ticket).State = EntityState.Modified;
                 db.SaveChanges();
-
-                NotificationHelper.CreateAssignmentNotification(oldTicket, ticket);
 
                 return RedirectToAction("Index");
             }
