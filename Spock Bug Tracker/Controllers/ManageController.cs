@@ -56,7 +56,7 @@ namespace Spock_Bug_Tracker.Controllers
 
         //
         // GET: /Manage/Index
-        [Authorize(Roles = "Admin, Project Manager, Developer, Submitter")]
+        [Authorize]
         public async Task<ActionResult> Index(ManageMessageId? message)
         {
             ViewBag.StatusMessage =
@@ -99,10 +99,10 @@ namespace Spock_Bug_Tracker.Controllers
         {
             if (userViewModel.AvatarUrl != null)
             {
-                if (ImageUploader.isWebFriendlyImage(userViewModel.Avatar))
+                if (ImageUploader.isWebFriendlyImage(userViewModel.AvatarUrl))
                 {
-                    var fileName = Path.GetFileName(userViewModel.Avatar.FileName).Replace(' ', '_');
-                    userViewModel.Avatar.SaveAs(Path.Combine(Server.MapPath("~/Avatar/"), fileName));
+                    var fileName = Path.GetFileName(userViewModel.AvatarUrl.FileName).Replace(' ', '_');
+                    userViewModel.AvatarUrl.SaveAs(Path.Combine(Server.MapPath("~/Avatar/"), fileName));
                     userViewModel.AvatarUrl = "/Avatar/" + fileName;
                 }
             }

@@ -42,6 +42,7 @@ namespace Spock_Bug_Tracker.Models
         public virtual ICollection<TicketHistory> TicketHistories { get; set; }
 
 
+
         public ApplicationUser()
         {
             Projects = new HashSet<Project>();
@@ -84,8 +85,6 @@ namespace Spock_Bug_Tracker.Models
         public DbSet<TicketStatus> TicketStatuses { get; set; }
         public DbSet<TicketType> TicketTypes { get; set; }
         public DbSet<ProjectNotification> ProjectNotifications { get; set; }
-
-
-
+        public DbSet<TaskItem> TaskItems { get; set; }
     }
 }

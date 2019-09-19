@@ -11,6 +11,7 @@ using Spock_Bug_Tracker.Models;
 
 namespace Spock_Bug_Tracker.Controllers
 {
+    [Authorize]
     public class TicketNotificationsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();

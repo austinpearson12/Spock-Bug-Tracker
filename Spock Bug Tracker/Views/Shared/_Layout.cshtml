@@ -52,7 +52,7 @@
     <link href="~/Content/jquery.dataTables.min.css" rel="stylesheet" />
     <!-- Head Libs -->
     <script src="~/assets/vendor/modernizr/modernizr.js"></script>
-
+    
     <style>
         body {
             background: linear-gradient(to right, #000046, #1cb5eo);
@@ -68,7 +68,7 @@
         <header class="header">
             <div class="logo-container">
                 <a href="../" class="logo">
-                    <img src="~/assets/images/logo.png" height="35" alt="JSOFT Admin" />
+                    
                 </a>
                 <div class="visible-xs toggle-sidebar-left" data-toggle-class="sidebar-left-opened" data-target="html" data-fire-event="sidebar-left-opened">
                     <i class="fa fa-bars" aria-label="Toggle sidebar"></i>
@@ -77,15 +77,6 @@
 
             <!-- start: search & user box -->
             <div class="header-right">
-
-                <form action="pages-search-results.html" class="search nav-form">
-                    <div class="input-group input-search">
-                        <input type="text" class="form-control" name="q" id="q" placeholder="Search...">
-                        <span class="input-group-btn">
-                            <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
-                        </span>
-                    </div>
-                </form>
 
                 <span class="separator"></span>
 
@@ -107,38 +98,38 @@
                                 <ul>
                                     @foreach (var notification in notificationHelper.GetUnreadUserNotifications())
                                     {
-                                    <li>
-                                        @using (Html.BeginForm("MarkAsRead", "TicketNotifications"))
-                                        {
-                                            @Html.AntiForgeryToken()
-                                            @Html.Hidden("Id", notification.Id)
+                                        <li>
+                                            @using (Html.BeginForm("MarkAsRead", "TicketNotifications"))
+                                            {
+                                                @Html.AntiForgeryToken()
+                                                @Html.Hidden("Id", notification.Id)
 
-                                            <div class="row">
-                                                <div class="col-md-2">
-                                                    <figure class="image">
-                                                        <img src="@notification.Sender.AvatarUrl" alt="@notification.Sender.Email" class="img-circle" width="25"/>
-                                                    </figure>
+                                                <div class="row">
+                                                    <div class="col-md-2">
+                                                        <figure class="image">
+                                                            <img src="@notification.Sender.AvatarUrl" alt="@notification.Sender.Email" class="img-circle" width="25" />
+                                                        </figure>
+                                                    </div>
+                                                    <div class="col-md-10">
+                                                        <span class="title">@notification.Subject</span>
+                                                    </div>
                                                 </div>
-                                                <div class="col-md-10">
-                                                    <span class="title">@notification.Subject</span>
+                                                <br />
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <span class="message text-justify"><b>@notification.NotificationBody</b></span>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <br />
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <span class="message text-justify"><b>@notification.NotificationBody</b></span>
+                                                <br />
+                                                <div class="row">
+                                                    <div class="col-md-12 text-center">
+                                                        <button type="submit" class="btn btn-sm btn-primary">Mark as read</button>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <br />
-                                            <div class="row">
-                                                <div class="col-md-12 text-center">
-                                                    <button type="submit" class="btn btn-sm btn-primary">Mark as read</button>
-                                                </div>
-                                            </div>
-                                        }
+                                            }
                                         </li>
                                     }
-                                    </ul>
+                                </ul>
 
                                 <hr />
 
@@ -185,7 +176,7 @@
                                 <li class="divider"></li>
                                 <li>
                                     <a role="menuitem" tabindex="-1" href="@Url.Action("Index", "Manage")"><i class="fa fa-user"></i> My Profile</a>
-                                </li>                                
+                                </li>
                                 <li>
                                     <a role="menuitem" tabindex="-1" href="@Url.Action("Login", "Account")"><i class="fa fa-power-off"></i> Logout</a>
                                 </li>
@@ -399,6 +390,15 @@
     <!-- Theme Initialization Files -->
     <script src="~/assets/javascripts/theme.init.js"></script>
 
+    <!--Fusion Charts-->
+    <!--Jquery-->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <!--FusionCharts-->
+    <script type="text/javascript" src="https://cdn.fusioncharts.com/fusioncharts/latest/fusioncharts.js"></script>
+    <!--jquery-FusionCharts-->
+    <script type="text/javascript" src="https://rawgit.com/fusioncharts/fusioncharts-jquery-plugin/develop/dist/fusioncharts.jqueryplugin.min.js"></script>
+    <!--Fusion Theme-->
+    <script type="text/javascript" src="https://cdn.fusioncharts.com/fusioncharts/latest/themes/fusioncharts.theme.fusion.js"></script>
 
     <!-- Examples -->
     <script src="~/assets/javascripts/dashboard/examples.dashboard.js"></script>

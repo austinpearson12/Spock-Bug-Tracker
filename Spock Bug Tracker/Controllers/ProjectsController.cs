@@ -12,6 +12,7 @@ using Spock_Bug_Tracker.Models;
 
 namespace Spock_Bug_Tracker.Controllers
 {
+    [Authorize]
     public class ProjectsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -69,6 +70,7 @@ namespace Spock_Bug_Tracker.Controllers
         {
             return View();
         }
+
 
         // POST: Projects/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 

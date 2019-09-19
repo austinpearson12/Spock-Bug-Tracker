@@ -54,10 +54,19 @@ namespace Spock_Bug_Tracker.Helper
             {
                 statusId = db.TicketStatuses.FirstOrDefault(t => t.Name == "Assigned").Id;
             }
+            else if (reAssignment)
+            {
+                statusId = db.TicketStatuses.FirstOrDefault(t => t.Name == "In Progress").Id;
+            }
+            else if (reAssignment)
+            {
+                statusId = db.TicketStatuses.FirstOrDefault(t => t.Name == "Completed").Id;
+            }
             else
             {
-                statusId = db.TicketStatuses.FirstOrDefault(t => t.Name == "Unknown").Id;
+                statusId = db.TicketStatuses.FirstOrDefault(t => t.Name == "Archived").Id;
             }
+            
 
             return statusId;
         }

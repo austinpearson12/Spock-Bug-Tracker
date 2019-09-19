@@ -13,6 +13,10 @@
     .height-sm {
         height: 300px;
     }
+    .img {
+        height: 35px;
+        max-width: 35px;
+    }
 </style>
 
 <h1 class="page-header">Ticket Dashboard <small>For Ticket "@Html.DisplayFor(modelItem => Model.Title)"</small></h1>
@@ -98,19 +102,31 @@
                     <ul class="media-list media-list-with-divider">
                         @foreach (var comment in Model.TicketComments.OrderByDescending(m => m.Created))
                         {
-                            <li class="media media-sm">
-                                <a class="pull-left">
-                                    <img src="@comment.Author.AvatarUrl" class="media-object rounded-corner" />
-                                </a>
-                                <div class="media-body m-l-10 pull-right">
+                            <div class="row">
+                                <div class="col-md-4">
                                     <div class="row">
-                                        <h5 class="media-heading">@comment.Author.FullName</h5>
-                                        <span><i>&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;@comment.Created.DateTime</i></span>
+                                        <div class="col-md-12">
+                                            <img src="@comment.Author.AvatarUrl" class="img-responsive" />
+
+                                        </div>
                                     </div>
 
-                                    <p>@comment.CommentBody</p>
                                 </div>
-                            </li>
+                                <div class="col-md-8">
+                                    <div class="row">
+                                        <div class="col-md-6">@comment.Created.ToString("MMM d, yyyy")</div>
+                                        <div class="col-md-6">@comment.Author.FullName</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            @comment.CommentBody
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <hr style="border-top: 2px dashed black;" />
                         }
                     </ul>
                 </div>
@@ -122,12 +138,9 @@
                     @Html.AntiForgeryToken()
                     @Html.Hidden("TicketId", Model.Id)
 
-                    <div class="input-group mb-3">
-                        <input type="text" class="form-control" name="CommentBody" placeholder="Enter message" />
-                        <span class="input-group-append">
-                            <button class="btn btn-primary" type="submit"><i class="fa fa-pencil"></i></button>
-                        </span>
-                    </div>
+                    <textarea name="CommentBody" row="10" cols="40" placeholder="Add Comment..."></textarea>
+                    <br />
+                    <button class="btn btn-danger" type="submit">Post Comment</button>
                 }
 
 
@@ -184,6 +197,7 @@
                         </div>
 
                     </div>
+                    <hr style="border-top: 2px dashed black;" />
                 }
             </div>
         </div>
@@ -239,15 +253,16 @@
     </div>
     <div class="col-md-8">
         <div class="col-xl-6 col-lg-12">
-            <section class="panel">
-                <header class="panel-heading panel-heading-transparent">
-                    <div class="panel-actions">
-                        <a href="#" class="fa fa-caret-down"></a>
-                        <a href="#" class="fa fa-times"></a>
+            <div data-collapsed="0" class="panel">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        <div class="panel-actions">
+                            <a href="#" class="fa fa-caret-down"></a>
+                            <a href="#" class="fa fa-times"></a>
+                        </div>
+                        <h2 class="panel-title">Ticket History</h2>
                     </div>
-
-                    <h2 class="panel-title">Ticket History</h2>
-                </header>
+                </div>              
                 <div class="panel-body">
                     <div class="timeline timeline-simple mt-xlg mb-md">
                         <div class="tm-body">
@@ -258,7 +273,7 @@
                                     var historyUser = db.Users.Where(u => u.Id == history.UserId).FirstOrDefault();
                                     <li>
                                         <div class="tm-box">
-                                            <p class="text-muted mb-none">(@history.Created)</p>
+                                            <p class="text-muted mb-none">(@history.Created.ToString("MMM d, yyyy"))</p>
                                             @if (history.PropertyName == "AssignedToUserId" && history.OldValue == null)
                                             {
                                                 <p class="lead">
@@ -279,7 +294,7 @@
                         </div>
                     </div>
                 </div>
-            </section>
-        </div>
+               
+            </div>
     </div>
 </div>

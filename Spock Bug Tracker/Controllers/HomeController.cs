@@ -10,6 +10,7 @@ using System.Web.Mvc;
 
 namespace Spock_Bug_Tracker.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         public ActionResult Index()

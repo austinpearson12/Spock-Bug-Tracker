@@ -171,21 +171,28 @@ namespace Spock_Bug_Tracker.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterViewModel model, HttpPostedFileBase Avatar)
+        public async Task<ActionResult> Register(RegisterViewModel model, HttpPostedFileBase filePath)
         {
+
             if (ModelState.IsValid)
             {
 
-                model.AvatarUrl = "/images/avaatar.jpg";
-                if (ImageUploader.isWebFriendlyImage(Avatar))
+                var user = new ApplicationUser {
+                    UserName = model.Email,
+                    DisplayName = model.DisplayName,
+                    Email = model.Email,
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    AvatarUrl = "/images/avaatar.jpg"
+                };
+                if (ImageUploader.isWebFriendlyImage(filePath))
                 {
-                    var fileName = Path.GetFileName(Avatar.FileName);
-                    Avatar.SaveAs(Path.Combine(Server.MapPath("~/Uploads/"), fileName));
-                    model.AvatarUrl = "/Uploads/" + fileName;
+                    var fileName = Path.GetFileName(filePath.FileName);
+                    filePath.SaveAs(Path.Combine(Server.MapPath("~/images/projects/"), fileName));
+                    user.AvatarUrl = "/images/projects/" + fileName;
                 }
 
 
-                var user = new ApplicationUser { UserName = model.Email, DisplayName = model.DisplayName, Email = model.Email, FirstName = model.FirstName, LastName = model.LastName, AvatarUrl = model.AvatarUrl};
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

@@ -22,7 +22,7 @@ namespace Spock_Bug_Tracker.ViewModels
         public string Email { get; set; }
 
         [Required(AllowEmptyStrings = false)]
-        public HttpPostedFileBase Avatar { get; set; }
+        
 
         public string AvatarUrl { get; set; }
         public IndexViewModel IndexViewModel { get; set; }

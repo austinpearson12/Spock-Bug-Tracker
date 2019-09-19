@@ -10,6 +10,7 @@ using Spock_Bug_Tracker.Models;
 
 namespace Spock_Bug_Tracker.Controllers
 {
+    [Authorize]
     public class TicketHistoriesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();

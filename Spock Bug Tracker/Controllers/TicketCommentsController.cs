@@ -11,6 +11,7 @@ using Spock_Bug_Tracker.Models;
 
 namespace Spock_Bug_Tracker.Controllers
 {
+    [Authorize]
     public class TicketCommentsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -54,6 +55,7 @@ namespace Spock_Bug_Tracker.Controllers
             if (ModelState.IsValid)
             {
                 ticketComment.AuthorId = User.Identity.GetUserId();
+                ticketComment.Created = DateTime.Now;
                 db.TicketComments.Add(ticketComment);
                 db.SaveChanges();
                 return RedirectToAction("Details", "Tickets", new { id = ticketComment.TicketId });
